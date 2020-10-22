@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://itony.net">
-    <img width="200" src="//cdn.jsdelivr.net/gh/tonyc726/tonyc726.github.io@main/static/android-chrome-192x192.png">
+    <img width="200" src="https://cdn.jsdelivr.net/gh/tonyc726/tonyc726.github.io@main/static/android-chrome-192x192.png">
   </a>
 </p>
 
