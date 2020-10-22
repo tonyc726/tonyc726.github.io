@@ -4,9 +4,12 @@
   </a>
 </p>
 
-<h1 align="center"><strong>iTony.net</strong><br/><i>Code & Life</i>  </h1>
+<h1 align="center"><a href="//itony.net"><strong>iTony.net</strong></a><br/><i>Code & Life</i></h1>
 
 ## 博客简介
+
+[![made-with-Go](https://img.shields.io/badge/Made%20with-hugo-1f425f.svg)](https://gohugo.io/)
+![Deploy on push events](https://github.com/tonyc726/tonyc726.github.io/workflows/Deploy%20on%20push%20events/badge.svg?branch=main)
 
 基于 Hugo，使用 Github Actions 自动构建，部署到：
 
