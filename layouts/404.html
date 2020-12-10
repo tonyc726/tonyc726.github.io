@@ -42,7 +42,7 @@
   <body>
     <script>
       (() => {
-        const goHomeTimer = (time = 100) => {
+        const goHomeTimer = (time = 30) => {
           setTimeout(() => {
             if (time <= 0) {
               window.location.href = "//itony.net";
@@ -68,7 +68,7 @@
         };
 
         document.addEventListener("DOMContentLoaded", function (event) {
-          goHomeTimer(100);
+          goHomeTimer(30);
         });
       })();
     </script>
