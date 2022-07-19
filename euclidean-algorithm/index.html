@@ -1,0 +1,79 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>欧几里得算法 - Code & Life</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="tony"><meta name=description content="在数学中，辗转相除法，又称欧几里得算法（英语：Euclidean algorithm），是求最大公约数的算法。辗转相除法首次出现于欧几里得的《"><meta name=keywords content="itony,blog"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://itony.net/euclidean-algorithm/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin=anonymous><meta property="og:title" content="欧几里得算法"><meta property="og:description" content="在数学中，辗转相除法，又称欧几里得算法（英语：Euclidean algorithm），是求最大公约数的算法。辗转相除法首次出现于欧几里得的《"><meta property="og:type" content="article"><meta property="og:url" content="https://itony.net/euclidean-algorithm/"><meta property="article:section" content="post"><meta property="article:published_time" content="2017-07-03T08:08:08+08:00"><meta property="article:modified_time" content="2017-07-03T08:08:08+08:00"><meta itemprop=name content="欧几里得算法"><meta itemprop=description content="在数学中，辗转相除法，又称欧几里得算法（英语：Euclidean algorithm），是求最大公约数的算法。辗转相除法首次出现于欧几里得的《"><meta itemprop=datePublished content="2017-07-03T08:08:08+08:00"><meta itemprop=dateModified content="2017-07-03T08:08:08+08:00"><meta itemprop=wordCount content="622"><meta itemprop=keywords content="Math,Algorithm,Javascript,"><meta name=twitter:card content="summary"><meta name=twitter:title content="欧几里得算法"><meta name=twitter:description content="在数学中，辗转相除法，又称欧几里得算法（英语：Euclidean algorithm），是求最大公约数的算法。辗转相除法首次出现于欧几里得的《"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>I'm Coder</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>I'm Coder</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>欧几里得算法</h1><div class=post-meta><span class=post-time>2017-07-03</span><div class=post-category><a href=/categories/hobbies/>Hobbies</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class="post-toc-content always-active"><nav id=TableOfContents></nav></div></div><div class=post-content><blockquote><p>在数学中，辗转相除法，又称欧几里得算法（英语：Euclidean algorithm），是求最大公约数的算法。辗转相除法首次出现于欧几里得的《几何原本》（第 VII 卷，命题 i 和 ii）中，而在中国则可以追溯至东汉出现的《九章算术》。</p><p>&ndash; 《<a href=https://zh.wikipedia.org/wiki/%E8%BC%BE%E8%BD%89%E7%9B%B8%E9%99%A4%E6%B3%95>辗转相除法 - 维基百科</a>》</p></blockquote><p>以上是 wikipedia 中的一段摘要，理论上欧几里得的辗转相除法实际可以计算任意多整数的最大公约数。</p><p>不过，今天主要是和大家分享一下其中一个最简单的案例，求两个整数的最大公约数。</p><p>根据 wikipedia 的解释，两个整数的最大公约数等于其中较小的数和两数的差的最大公约数，公式如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>g = GCD(a, b) = GCD(b, r0) = GCD(r0, r1) = … = GCD(rN−2, rN−1) = rN−1
+</span></span></code></pre></td></tr></table></div></div><p>可能上面的描述不是很直观，那就用个例子来解释一下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>a = 1071; b = 462;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 从1071中不断减去462直到小于462（可以减2次，即商q0 = 2），余数是147
+</span></span><span class=line><span class=cl>1071 = 2 × 462 + 147
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 然后从462中不断减去147直到小于147（可以减3次，即q1 = 3），余数是21
+</span></span><span class=line><span class=cl>462 = 3 × 147 + 21
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 再从147中不断减去21直到小于21（可以减7次，即q2 = 7），没有余数
+</span></span><span class=line><span class=cl>147 = 7 × 21 + 0
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 此时，余数是0，所以1071和462的最大公约数是21
+</span></span></code></pre></td></tr></table></div></div><p>其实说白了就是不断的取余，直到余数为 0，就可以得出最大公约数了。</p><p>那么，能想到最直接的方式就是使用递归了，下面用<code>Javascript</code>实现一遍：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>GCD</span> <span class=o>=</span> <span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=nx>b</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// a 必须 大于 b
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=k>if</span> <span class=p>(</span><span class=nx>b</span> <span class=o>===</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>a</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>max</span> <span class=o>=</span> <span class=nx>a</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>min</span> <span class=o>=</span> <span class=nx>b</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>max</span> <span class=o>&lt;</span> <span class=nx>min</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>min</span> <span class=o>=</span> <span class=nx>a</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>max</span> <span class=o>=</span> <span class=nx>b</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>GCD</span><span class=p>(</span><span class=nx>min</span><span class=p>,</span> <span class=nx>max</span> <span class=o>%</span> <span class=nx>min</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>tony</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2017-07-03</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/math/>Math</a>
+<a href=/tags/algorithm/>Algorithm</a>
+<a href=/tags/javascript/>Javascript</a></div><nav class=post-nav><a class=prev href=/raspbian-install-tengine/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Raspbian安装Tengine</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/css-style-cascading-weight-value/><span class="next-text nav-default">深入解析CSS样式层叠权重值</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zhujf620@email.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/tonyc726 class="iconfont icon-github" title=github></a>
+<a href=https://itony.net/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2017-
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>本站采用&nbsp;<a href=https://creativecommons.org/licenses/by-nc-nd/4.0/ style=color:#8a8a8a>CC BY-NC-ND 4.0</a>&nbsp;许可协议</span></span><div style=padding-top:5px;padding-bottom:10px><a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802008412" style=display:inline-block;text-decoration:none;height:20px;line-height:20px;color:#8a8a8a><img src=/gongan.png width=20 height=20 alt=浙公网安Logo style=margin-right:3px>浙公网安备33010802008412号</a>
+<span style="margin:0 .5em">|</span>
+<span><a href=http://www.beian.miit.gov.cn style=color:#8a8a8a>浙ICP备17024120号-1</a></span></div></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-83193985-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

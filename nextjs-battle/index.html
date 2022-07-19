@@ -1,0 +1,268 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Next.js实战 - Code & Life</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="tony"><meta name=description content="Next.js是目前用于实现 React 服务端渲染框架中的比较流行的一个，得力于ZEIT的维护，使得相对于其它的一些框架，不论是在文档还是配套上面，它"><meta name=keywords content="itony,blog"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://itony.net/nextjs-battle/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin=anonymous><meta property="og:title" content="Next.js实战"><meta property="og:description" content="Next.js是目前用于实现 React 服务端渲染框架中的比较流行的一个，得力于ZEIT的维护，使得相对于其它的一些框架，不论是在文档还是配套上面，它"><meta property="og:type" content="article"><meta property="og:url" content="https://itony.net/nextjs-battle/"><meta property="article:section" content="post"><meta property="article:published_time" content="2017-11-01T08:08:08+08:00"><meta property="article:modified_time" content="2017-11-01T08:08:08+08:00"><meta itemprop=name content="Next.js实战"><meta itemprop=description content="Next.js是目前用于实现 React 服务端渲染框架中的比较流行的一个，得力于ZEIT的维护，使得相对于其它的一些框架，不论是在文档还是配套上面，它"><meta itemprop=datePublished content="2017-11-01T08:08:08+08:00"><meta itemprop=dateModified content="2017-11-01T08:08:08+08:00"><meta itemprop=wordCount content="2775"><meta itemprop=keywords content="Note,FrontEnd,React,SSR,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Next.js实战"><meta name=twitter:description content="Next.js是目前用于实现 React 服务端渲染框架中的比较流行的一个，得力于ZEIT的维护，使得相对于其它的一些框架，不论是在文档还是配套上面，它"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>I'm Coder</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>I'm Coder</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Next.js实战</h1><div class=post-meta><span class=post-time>2017-11-01</span><div class=post-category><a href=/categories/web-technologies/>Web Technologies</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#js-方面的坑>JS 方面的坑</a><ul><li><a href=#使用jsx作为文件后缀>使用<code>jsx</code>作为文件后缀？</a></li><li><a href=#js-中读取processenv返回undefined>JS 中读取<code>process.env.*</code>返回<code>undefined</code>？</a></li><li><a href=#使用babel处理node_modules中部分-js-的方法>使用<strong>babel</strong>处理<code>node_modules</code>中部分 JS 的方法？</a></li></ul></li><li><a href=#static-静态资源方面的坑>Static 静态资源方面的坑</a><ul><li><a href=#如何引入图片字体等静态资源>如何引入图片、字体等静态资源？</a></li><li><a href=#如何引用全局静态资源>如何引用全局静态资源？</a></li></ul></li><li><a href=#css-方面的坑>CSS 方面的坑</a><ul><li><a href=#实现css-modules>实现<code>CSS Modules</code>？</a></li><li><a href=#styled-jsx与-babel-的冲突><code>styled-jsx</code>与 babel 的冲突？</a></li><li><a href=#cssnano处理后font-face内容缺失><code>cssnano</code>处理后<code>@font-face</code>内容缺失？</a></li><li><a href=#首次渲染pages_documentjs全局未能生效>首次渲染<code>pages/_document.js</code>，全局未能生效？</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><p><a href=https://github.com/zeit/next.js/>Next.js</a>是目前用于实现 React 服务端渲染框架中的比较流行的一个，得力于<a href=https://zeit.co>ZEIT</a>的维护，使得相对于其它的一些框架，不论是在文档还是配套上面，它都比较齐全。</p><p>官方就提供了<a href=https://learnnextjs.com/>learnnextjs</a>这样的交互式入门教程，这里就不多说了（结合文档效果更好）。</p><p>既然是实战，这里就说点自己遇到的问题及解决方案，下面将问题总的划分为几个分类：</p><h2 id=js-方面的坑>JS 方面的坑</h2><h3 id=使用jsx作为文件后缀>使用<code>jsx</code>作为文件后缀？</h3><p>一开始笔者习惯性的使用<code>jsx</code>作为文件后缀，发现控制台中老是报错，说是模块没有找到，这种一看就是配置问题，需要修改<code>next.config.js</code>中 webpack 的配置，增加<code>extensions</code>的<code>jsx</code>还有对应的<code>babel-loader</code>的配置，结果发现完全不起作用，看来是 next.js 中对于相关文件做了特殊的处理，目前来看只能使用<code>*.js</code>作为文件后缀了。</p><p>官方目前的回复也是这样，暂时就支持<code>*.js</code>作为后缀，具体可以看一下这个<a href=https://github.com/zeit/next.js/issues/200#issuecomment-291043036>issue</a></p><h3 id=js-中读取processenv返回undefined>JS 中读取<code>process.env.*</code>返回<code>undefined</code>？</h3><p>如果直接用<code>node</code>执行<code>*.js</code>文件，那么<strong>cross-env</strong>就比较合适，这个包帮我们处理的跨平台时<code>env</code>定义的问题，但是<strong>next.js</strong>是依赖于构建工具<strong>webpack</strong>的，换句话说，如果直接在<code>package.json</code>的<code>scripts</code>中使用<code>cross-env</code>是无法直接影响<strong>webpack</strong>的处理结果的，还需要用到<code>webpack.DefinePlugin</code>这个插件来做一次定义，<strong>next.js</strong>提供了一个<a href=https://github.com/zeit/next.js/blob/canary/examples/with-now-env>简单的例子</a>，<a href=https://github.com/zeit/next.js/blob/canary/examples/with-now-env/next.config.js#L21-L30>核心代码</a>如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>webpack</span><span class=o>:</span> <span class=p>(</span><span class=nx>config</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>config</span><span class=p>.</span><span class=nx>plugins</span><span class=p>.</span><span class=nx>forEach</span><span class=p>((</span><span class=nx>plugin</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>plugin</span><span class=p>.</span><span class=nx>constructor</span><span class=p>.</span><span class=nx>name</span> <span class=o>===</span> <span class=s2>&#34;DefinePlugin&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>plugin</span><span class=p>.</span><span class=nx>definitions</span><span class=p>[</span><span class=s2>&#34;process.env.SECRET&#34;</span><span class=p>]</span> <span class=o>=</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>SECRET</span>
+</span></span><span class=line><span class=cl>      <span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>config</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><p>另外，这只是其中的一个解决方法，<strong>next.js</strong>还提供了一个<a href=https://github.com/zeit/next.js/blob/canary/examples/with-dotenv>基于<strong>Babel</strong>和<strong>dotenv</strong>的例子</a>，原理就是在 Babel 处理阶段就将代码中的<code>process.env.*</code>替换处理。</p><h3 id=使用babel处理node_modules中部分-js-的方法>使用<strong>babel</strong>处理<code>node_modules</code>中部分 JS 的方法？</h3><p>为了兼容 <strong>Android4.3</strong>，就必须要用 <strong>babel</strong> 结合相关的工具对 ES6 做兼容性处理，但是，默认的<code>next.config.js</code>中关于<code>jsx</code>的处理一般都会设置<code>exclude</code>过滤掉<code>node_modules</code>，就像这样的配置：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>test</span><span class=o>:</span> <span class=sr>/\.(js|jsx)$/</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>use</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;babel-loader&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nx>exclude</span><span class=o>:</span> <span class=sr>/node_modules/</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>next.js</strong>的 issues 中有不少关于这个的讨论，目前实践下来，最简单的就是直接修改<code>exclude</code>属性即可：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>test</span><span class=o>:</span> <span class=sr>/\.(js|jsx)$/</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>use</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;babel-loader&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 这里对react及react-dom 2个做了过滤处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// 也就是说这2个会被babel做处理
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>exclude</span><span class=o>:</span> <span class=sr>/node_modules\/(?!(react|react-dom)\/).*/</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>当然，babel 还需要结合<code>.babelrc</code>和<code>.browserslistrc</code>这些配置项及<code>babel-plugin-transform-runtime</code>这样的工具，如果需要了解更多，可以参考 <strong><a href=https://itony.net/post/babel-note.html>Babel 笔记</a></strong> 这篇文章。</p><h2 id=static-静态资源方面的坑>Static 静态资源方面的坑</h2><blockquote><p>官网教程中并没有全面的介绍如何控制好静态资源的加载及维护，下面就说说一些常见的问题。</p></blockquote><h3 id=如何引入图片字体等静态资源>如何引入图片、字体等静态资源？</h3><p>webpack 及配套的<code>*-loader</code>，使得我们可以很方便的在 JS 文件中通过<code>import</code>载入各种静态资源，不过 next.js 基础中并未对图片、字体等文件做特殊配置，所以需要我们手动在<code>next.config.js</code>中增加 webpack 的相关配置：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>test</span><span class=o>:</span> <span class=sr>/\.(png|jpe?g|gif)(\?.*)?$/</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>use</span><span class=o>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>loader</span><span class=o>:</span> <span class=s1>&#39;emit-file-loader&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>options</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>name</span><span class=o>:</span> <span class=s1>&#39;dist/[path][name].[ext]&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>loader</span><span class=o>:</span> <span class=s1>&#39;url-loader&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>options</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>limit</span><span class=o>:</span> <span class=mi>2000</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>outputPath</span><span class=o>:</span> <span class=s1>&#39;static/images/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>publicPath</span><span class=o>:</span> <span class=s1>&#39;/_next/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl><span class=p>},</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>test</span><span class=o>:</span> <span class=sr>/\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>use</span><span class=o>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>loader</span><span class=o>:</span> <span class=s1>&#39;emit-file-loader&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>options</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>name</span><span class=o>:</span> <span class=s1>&#39;dist/[path][name].[ext]&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>loader</span><span class=o>:</span> <span class=s1>&#39;url-loader&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>options</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>limit</span><span class=o>:</span> <span class=mi>2000</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>outputPath</span><span class=o>:</span> <span class=s1>&#39;static/fonts/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>publicPath</span><span class=o>:</span> <span class=s1>&#39;/_next/&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=如何引用全局静态资源>如何引用全局静态资源？</h3><p><a href=https://github.com/zeit/next.js/#static-file-serving-eg-images>官网的推荐</a>是在根目录的<code>static</code>文件夹中放入即可，后续不论是在 JS 还是 CSS 文件中，只需要写绝对路径<code>/static/{path_to_file}</code>即可，next.js 帮助做了一些类似于路由映射的处理，很遗憾，官方并未给出 cache 的方案，目前来看有 2 中思路</p><h4 id=1-基于-url-中param的-cache-方案>1. 基于 URL 中<code>param</code>的 cache 方案</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>link</span>
+</span></span><span class=line><span class=cl>  <span class=nx>rel</span><span class=o>=</span><span class=s2>&#34;stylesheet&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>type</span><span class=o>=</span><span class=s2>&#34;text/css&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>href</span><span class=o>=</span><span class=p>{</span><span class=sb>`/static/styles/app.css?</span><span class=si>${</span><span class=k>this</span><span class=p>.</span><span class=nx>props</span><span class=p>.</span><span class=nx>__NEXT_DATA__</span><span class=p>.</span><span class=nx>buildStats</span><span class=p>[</span><span class=s2>&#34;app.js&#34;</span><span class=p>].</span><span class=nx>hash</span><span class=si>}</span><span class=sb>`</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=err>/&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=2-基于-url-中path结合脚本迁移文件路暂时是个思路未具体实现>2. 基于 URL 中<code>path</code>结合脚本迁移文件路*(暂时是个思路，未具体实现)*</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=o>&lt;</span><span class=nx>link</span>
+</span></span><span class=line><span class=cl>  <span class=nx>rel</span><span class=o>=</span><span class=s2>&#34;stylesheet&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>type</span><span class=o>=</span><span class=s2>&#34;text/css&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>href</span><span class=o>=</span><span class=p>{</span><span class=sb>`/_next/</span><span class=si>${</span><span class=k>this</span><span class=p>.</span><span class=nx>props</span><span class=p>.</span><span class=nx>__NEXT_DATA__</span><span class=p>.</span><span class=nx>buildStats</span><span class=p>[</span><span class=s2>&#34;app.js&#34;</span><span class=p>].</span><span class=nx>hash</span><span class=si>}</span><span class=sb>/app.css`</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=err>/&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>文件迁移脚本</p><blockquote><p><a href=https://stedolan.github.io/jq/>jq</a>是一个轻量级的命令行 JSON 处理工具</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/usr/bin/env bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=nv>NEXT_BUILD_ID</span><span class=o>=</span><span class=sb>`</span>cat .next/build-stats.json <span class=p>|</span> jq -r <span class=s1>&#39;.[][]&#39;</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl>cp -Rf ./static/* ./_next/<span class=si>${</span><span class=nv>NEXT_BUILD_ID</span><span class=si>}</span>/
+</span></span></code></pre></td></tr></table></div></div><h2 id=css-方面的坑>CSS 方面的坑</h2><blockquote><p>官方提供了很多 CSS 的示例，但是个人觉得这个是踩坑最多的地方</p></blockquote><h3 id=实现css-modules>实现<code>CSS Modules</code>？</h3><p>得益于<code>css-loader</code>，如果单单是做客户端渲染，只需要在 webpack 的配置中启用<a href=https://github.com/webpack-contrib/css-loader#modules><code>modules</code></a>配置即可，从而简简单单的实现<strong>BEM</strong>，但是 Next.js 官方并不支持该方案，具体可以参考这个<a href=https://github.com/zeit/next.js/issues/544>issue</a>，虽然大家也都集思广益，造出了各种方案，但是具体实施起来效果都不怎么理想，反倒是官方推荐的<code>styled-jsx</code>方案，结合<code>postcss</code>之后，成了不错的选择。</p><p><a href=https://github.com/zeit/next.js/tree/canary/examples/with-styled-jsx-plugins>with-styled-jsx-plugins</a>这个例子已经实现了基础的配置，你只需要增加<code>postcss.config.js</code>扩展一下即可：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm> * postcss.config.js
+</span></span></span><span class=line><span class=cl><span class=cm> *
+</span></span></span><span class=line><span class=cl><span class=cm> * @see https://github.com/zeit/next.js/tree/master/examples/with-global-stylesheet/
+</span></span></span><span class=line><span class=cl><span class=cm> */</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>postcssEasyImport</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;postcss-easy-import&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>postcssCssnext</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;postcss-cssnext&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>cssnano</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;cssnano&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>lost</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;lost&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>postCSSPluginCombinations</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// keep this first
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// https://github.com/TrySound/postcss-easy-import#options
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>postcssEasyImport</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// prefix: &#39;_&#39;,
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}),</span>
+</span></span><span class=line><span class=cl>  <span class=nx>lost</span><span class=p>(),</span>
+</span></span><span class=line><span class=cl>  <span class=nx>postcssCssnext</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// so imports are auto-prefixed too
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// @see http://robin-front.github.io/2016/04/09/postCSS-loader%E9%85%8D%E7%BD%AE/
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>browsers</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;&gt; 1% in CN&#34;</span><span class=p>,</span> <span class=s2>&#34;last 2 versions&#34;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=nx>features</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>rem</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>}),</span>
+</span></span><span class=line><span class=cl><span class=p>];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>module</span><span class=p>.</span><span class=nx>exports</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>plugins</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=nx>process</span><span class=p>.</span><span class=nx>env</span><span class=p>.</span><span class=nx>NODE_ENV</span> <span class=o>===</span> <span class=s2>&#34;production&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=o>?</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>          <span class=p>...</span><span class=nx>postCSSPluginCombinations</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nx>cssnano</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>            <span class=nx>autoprefixer</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nx>discardUnused</span><span class=o>:</span> <span class=p>{</span> <span class=nx>fontFace</span><span class=o>:</span> <span class=kc>false</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>          <span class=p>}),</span>
+</span></span><span class=line><span class=cl>        <span class=p>]</span>
+</span></span><span class=line><span class=cl>      <span class=o>:</span> <span class=nx>postCSSPluginCombinations</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=styled-jsx与-babel-的冲突><code>styled-jsx</code>与 babel 的冲突？</h3><p>之前在<code>babel</code>的生产环境发布前，会利用一些<code>plugin</code>优化 react 的产出代码，其中最常用的就是<code>transform-react-remove-prop-types</code>、<code>transform-react-constant-elements</code>、<code>transform-react-inline-elements</code>，这个时候 <code>styled-jsx</code>对于<code>&lt;style jsx>{***}&lt;/style></code>中的处理就会与**<code>transform-react-constant-elements</code><strong>、</strong><code>transform-react-inline-elements</code>**冲突了，导致无法正常处理<code>scope</code>及<code>optimized</code>的功能，这里建议直接将<code>transform-react-constant-elements</code>和<code>transform-react-inline-elements</code>去除即可。</p><h3 id=cssnano处理后font-face内容缺失><code>cssnano</code>处理后<code>@font-face</code>内容缺失？</h3><p>一般现在都会在上生产环境前使用 cssnano 对 CSS 文件做一次压缩优化，不过现在碰到一个问题，在处理后，<code>@font-face</code>的内容缺失了，<a href=https://github.com/ben-eb/cssnano/issues/145#issuecomment-186311624>cssnano 的 issue 中有人提供了解决方式</a>：禁用其对<code>@font-face</code>的优化即可。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>cssnano</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=nx>autoprefixer</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 禁用对`@font-face`的优化
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nx>discardUnused</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>fontFace</span><span class=o>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=首次渲染pages_documentjs全局未能生效>首次渲染<code>pages/_document.js</code>，全局未能生效？</h3><p>next.js 推荐使用<code>styled-jsx</code>处理 css，所以在<code>_document.js</code>中想当然的使用了下面的写法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-jsx data-lang=jsx><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>style</span> <span class=na>jsx</span> <span class=na>global</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span><span class=nx>mainStyles</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>这样就直接导致了一个问题，在第一次访问服务的时候，发现<code>mainStyles</code>中的内容并未被加载并执行，next.js 的<a href=https://github.com/zeit/next.js/issues>issues</a> 中有人也已经反映过<a href=https://github.com/zeit/next.js/issues/2210>这个问题并且给出了解决方案</a>，简单来说就是直接使用<code>&lt;style></code>加载即可，不要使用<code>&lt;style jsx global></code>。</p></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>tony</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2017-11-01</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/note/>Note</a>
+<a href=/tags/frontend/>FrontEnd</a>
+<a href=/tags/react/>React</a>
+<a href=/tags/ssr/>SSR</a></div><nav class=post-nav><a class=prev href=/the-big-world/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">THE BIG WORLD</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/javascript-random-number/><span class="next-text nav-default">JS生成有范围伪随机数</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zhujf620@email.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/tonyc726 class="iconfont icon-github" title=github></a>
+<a href=https://itony.net/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2017-
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>本站采用&nbsp;<a href=https://creativecommons.org/licenses/by-nc-nd/4.0/ style=color:#8a8a8a>CC BY-NC-ND 4.0</a>&nbsp;许可协议</span></span><div style=padding-top:5px;padding-bottom:10px><a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802008412" style=display:inline-block;text-decoration:none;height:20px;line-height:20px;color:#8a8a8a><img src=/gongan.png width=20 height=20 alt=浙公网安Logo style=margin-right:3px>浙公网安备33010802008412号</a>
+<span style="margin:0 .5em">|</span>
+<span><a href=http://www.beian.miit.gov.cn style=color:#8a8a8a>浙ICP备17024120号-1</a></span></div></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-83193985-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

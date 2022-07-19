@@ -1,0 +1,398 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>JavaScript模块化开发的演进历程 - Code & Life</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="tony"><meta name=description content="Brendan Eich用了 10 天就创造了 JavaScript，因为当时的需求定位，导致了在设计之初，在语言层就不包含很多高级语言的特性，其中就包括模块这个"><meta name=keywords content="itony,blog"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://itony.net/javascript-module-history/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin=anonymous><meta property="og:title" content="JavaScript模块化开发的演进历程"><meta property="og:description" content="Brendan Eich用了 10 天就创造了 JavaScript，因为当时的需求定位，导致了在设计之初，在语言层就不包含很多高级语言的特性，其中就包括模块这个"><meta property="og:type" content="article"><meta property="og:url" content="https://itony.net/javascript-module-history/"><meta property="article:section" content="post"><meta property="article:published_time" content="2017-09-07T08:08:08+08:00"><meta property="article:modified_time" content="2017-09-07T08:08:08+08:00"><meta itemprop=name content="JavaScript模块化开发的演进历程"><meta itemprop=description content="Brendan Eich用了 10 天就创造了 JavaScript，因为当时的需求定位，导致了在设计之初，在语言层就不包含很多高级语言的特性，其中就包括模块这个"><meta itemprop=datePublished content="2017-09-07T08:08:08+08:00"><meta itemprop=dateModified content="2017-09-07T08:08:08+08:00"><meta itemprop=wordCount content="4013"><meta itemprop=keywords content="FrontEnd,Javascript,"><meta name=twitter:card content="summary"><meta name=twitter:title content="JavaScript模块化开发的演进历程"><meta name=twitter:description content="Brendan Eich用了 10 天就创造了 JavaScript，因为当时的需求定位，导致了在设计之初，在语言层就不包含很多高级语言的特性，其中就包括模块这个"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>I'm Coder</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>I'm Coder</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>JavaScript模块化开发的演进历程</h1><div class=post-meta><span class=post-time>2017-09-07</span><div class=post-category><a href=/categories/web-technologies/>Web Technologies</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#参考>参考</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><p><a href=https://brendaneich.com/>Brendan Eich</a>用了 10 天就创造了 JavaScript，因为当时的需求定位，导致了在设计之初，在语言层就不包含很多高级语言的特性，其中就包括模块这个特性，但是经过了这么多年的发展，如今对 JavaScript 的需求已经远远超出了 Brendan Eich 的预期，其中模块化开发更是其中最大的需求之一。</p><p>尤其是 2009 年 Node.js 出现以后，CommonJS 规范的落地极大的推动了整个社区的模块化开发氛围，并且随之出现了 AMD、CMD、UMD 等等一系列可以在浏览器等终端实现的异步加载的模块化方案。</p><p>此前，虽然自己也一直在推进模块化开发，但是没有深入了解过模块化演进的历史，直到最近看到了一篇文章《<a href=https://zhuanlan.zhihu.com/p/26118022>精读 JS 模块化发展</a>》，文章总结了<a href=https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity>History of JavaScript</a>这个开源项目中关于 JavaScript 模块化演进的部分，细读几次之后，对于一些以前模棱两可的东西，顿时清晰了不少，下面就以时间线总结一下自己的理解：</p><p>在<strong>1999 年</strong>的时候，绝大部分工程师做 JS 开发的时候就直接将变量定义在全局，做的好一些的或许会做一些文件目录规划，将资源归类整理，这种方式被称为<strong>直接定义依赖</strong>，举个例子：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>var</span> <span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>en</span><span class=o>:</span> <span class=s2>&#34;Hello world!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>es</span><span class=o>:</span> <span class=s2>&#34;¡Hola mundo!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>ru</span><span class=o>:</span> <span class=s2>&#34;Привет мир!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>writeHello</span><span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// third_party_script.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>writeHello</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=s2>&#34;The script is broken&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>// index.html
+</span></span><span class=line><span class=cl><span class=cp>&lt;!DOCTYPE html&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>Basic example<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;./greeting.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;./third_party_script.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>body</span> <span class=na>onLoad</span><span class=o>=</span><span class=s>&#34;writeHello(&#39;ru&#39;)&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>但是，即使有规范的目录结构，也不能避免由此而产生的大量全局变量，这就导致了一不小心就会有变量冲突的问题，就好比上面这个例子中的<code>writeHello</code>。</p><p>于是在<strong>2002 年</strong>左右，有人提出了<strong>命名空间模式</strong>的思路，用于解决遍地的全局变量，将需要定义的部分归属到一个对象的属性上，简单修改上面的例子，就能实现这种模式：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>var</span> <span class=nx>app</span> <span class=o>=</span> <span class=p>{};</span>
+</span></span><span class=line><span class=cl><span class=nx>app</span><span class=p>.</span><span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>en</span><span class=o>:</span> <span class=s2>&#34;Hello world!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>es</span><span class=o>:</span> <span class=s2>&#34;¡Hola mundo!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>ru</span><span class=o>:</span> <span class=s2>&#34;Привет мир!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=nx>app</span><span class=p>.</span><span class=nx>writeHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// third_party_script.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>writeHello</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=s2>&#34;The script is broken&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>不过这种方式，毫无隐私可言，本质上就是全局对象，谁都可以来访问并且操作，一点都不安全。</p><p>所以在<strong>2003 年</strong>左右就有人提出利用<a href=https://developer.mozilla.org/zh-CN/docs/Glossary/%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F>IIFE</a>结合<a href=https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures>Closures</a>特性，以此解决私有变量的问题，这种模式被称为<strong>闭包模块化模式</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>var</span> <span class=nx>greeting</span> <span class=o>=</span> <span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>module</span> <span class=o>=</span> <span class=p>{};</span>
+</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>en</span><span class=o>:</span> <span class=s2>&#34;Hello world!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>es</span><span class=o>:</span> <span class=s2>&#34;¡Hola mundo!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>ru</span><span class=o>:</span> <span class=s2>&#34;Привет мир!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>module</span><span class=p>.</span><span class=nx>getHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>module</span><span class=p>.</span><span class=nx>writeHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=nx>module</span><span class=p>.</span><span class=nx>getHello</span><span class=p>(</span><span class=nx>lang</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>module</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>})();</span>
+</span></span></code></pre></td></tr></table></div></div><p>IIFE 可以形成一个独立的作用域，其中声明的变量，仅在该作用域下，从而达到实现私有变量的目的，就如上面例子中的<code>helloInLang</code>，在该 IIFE 外是不能直接访问和操作的，可以通过暴露一些方法来访问和操作，比如说上面例子里面的<code>getHello</code>和<code>writeHello</code>2 个方法，这就是所谓的 Closures。</p><p>同时，不同模块之间的引用也可以通过参数的形式来传递：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// x.js
+</span></span></span><span class=line><span class=cl><span class=c1>// @require greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>var</span> <span class=nx>x</span> <span class=o>=</span> <span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>greeting</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>module</span> <span class=o>=</span> <span class=p>{};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nx>module</span><span class=p>.</span><span class=nx>writeHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>document</span><span class=p>.</span><span class=nx>write</span><span class=p>(</span><span class=nx>greeting</span><span class=p>.</span><span class=nx>getHello</span><span class=p>(</span><span class=nx>lang</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>module</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>})(</span><span class=nx>greeting</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>此外使用 IIFE，还有 2 个好处：</p><ol><li><p>提高性能：通过 IIFE 的参数传递常用全局对象 window、document，在作用域内引用这些全局对象。JavaScript 解释器首先在作用域内查找属性，然后一直沿着链向上查找，直到全局范围，因此将全局对象放在 IIFE 作用域内可以提升 js 解释器的查找速度和性能；</p></li><li><p>压缩空间：通过参数传递全局对象，压缩时可以将这些全局对象匿名为一个更加精简的变量名；</p></li></ol><p>在那个年代，除了这种解决思路以外，还有通过其它语言的协助来完成模块化的解决思路，比如说<strong>模版依赖定义</strong>、<strong>注释依赖定义</strong>、<strong>外部依赖定义</strong>等等，不过不常见，所以就不细说了，究其本源，它们想最终实现的方式都差不多。</p><p>不过，这些方案，虽然解决了依赖关系的问题，但是没有解决如何管理这些模块，或者说在使用时清晰描述出依赖关系，这点还是没有被解决，可以说是少了一个管理者。</p><p>没有管理者的时候，在实际项目中，得手动管理第三方的库和项目封装的模块，就像下面这样把所有需要的 JS 文件一个个按照依赖的顺序加载进来：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;zepto.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;jhash.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;fastClick.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;iScroll.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;underscore.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;handlebar.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;datacenter.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;deferred.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;util/wxbridge.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;util/login.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;util/base.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;util/city.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>如果页面中使用的模块数量越来越多，恐怕再有经验的工程师也很难维护好它们之间的依赖关系了。</p><p>于是如 LABjs 之类的加载工具就横空出世了，通过使用它的 API，动态创建<code>&lt;script></code>，从而达到控制 JS 文件加载以及执行顺序的目的，在一定的程度上解决了依赖关系，例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>$LAB</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>script</span><span class=p>(</span><span class=s2>&#34;greeting.js&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>script</span><span class=p>(</span><span class=s2>&#34;x.js&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>script</span><span class=p>(</span><span class=s2>&#34;y.js&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>wait</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>  <span class=p>.</span><span class=nx>script</span><span class=p>(</span><span class=s2>&#34;run.js&#34;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>不过 LABjs 之类的加载工具是建立在以文件为单位的基础之上的，但是 JS 中的模块又不一定必须是文件，同一个文件中可以声明多个模块，YUI 作为昔日前端领域的佼佼者，很好的糅合了<strong>命名空间模式</strong>及<strong>沙箱模式</strong>，下面来一睹它的风采：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// YUI - 编写模块
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>YUI</span><span class=p>.</span><span class=nx>add</span><span class=p>(</span><span class=s1>&#39;dom&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>Y</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>Y</span><span class=p>.</span><span class=nx>DOM</span> <span class=o>=</span> <span class=p>{</span> <span class=p>...</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// YUI - 使用模块
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>YUI</span><span class=p>().</span><span class=nx>use</span><span class=p>(</span><span class=s1>&#39;dom&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>Y</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>Y</span><span class=p>.</span><span class=nx>DOM</span><span class=p>.</span><span class=nx>doSomeThing</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// use some methods DOM attach to Y
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// hello.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>YUI</span><span class=p>.</span><span class=nx>add</span><span class=p>(</span><span class=s1>&#39;hello&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>Y</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Y</span><span class=p>.</span><span class=nx>sayHello</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>msg</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=nx>Y</span><span class=p>.</span><span class=nx>DOM</span><span class=p>.</span><span class=nx>set</span><span class=p>(</span><span class=nx>el</span><span class=p>,</span> <span class=s1>&#39;innerHTML&#39;</span><span class=p>,</span> <span class=s1>&#39;Hello!&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>},</span><span class=s1>&#39;3.0.0&#39;</span><span class=p>,{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>requires</span><span class=o>:</span><span class=p>[</span><span class=s1>&#39;dom&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// main.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>YUI</span><span class=p>().</span><span class=nx>use</span><span class=p>(</span><span class=s1>&#39;hello&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>(</span><span class=nx>Y</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Y</span><span class=p>.</span><span class=nx>sayHello</span><span class=p>(</span><span class=s2>&#34;hey yui loader&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span></code></pre></td></tr></table></div></div><p>此外，YUI 团队还提供的一系列用于 JS 压缩、混淆、请求合并（合并资源需要 server 端配合）等性能优化的工具，说其是现有 JS 模块化的鼻祖一点都不过分。</p><p>不过，随着 Node.js 的到来，CommonJS 规范的落地以及各种前端工具、解决方案的出现，很快，YUI3 就被湮没在了历史的长流里面，这样成为了 JS 模块化开发的一个分水岭，引用一段描述：</p><blockquote><p>从 1999 年开始，模块化探索都是基于语言层面的优化，真正的革命从 2009 年 CommonJS 的引入开始，前端开始大量使用预编译。</p></blockquote><p>CommonJS 是一套同步的方案，它考虑的是在服务端运行的 Node.js，主要是通过<code>require</code>来加载依赖项，通过<code>exports</code>或者<code>module.exports</code>来暴露接口或者数据的方式，想了解更多，可以看一下《<a href=http://javascript.ruanyifeng.com/nodejs/module.html>CommonJS 规范</a>》，下面举个简单的例子：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kd>var</span> <span class=nx>math</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;math&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>esports</span><span class=p>.</span><span class=nx>result</span> <span class=o>=</span> <span class=nx>math</span><span class=p>.</span><span class=nx>add</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>);</span> <span class=c1>// 5
+</span></span></span></code></pre></td></tr></table></div></div><p>由于服务器上通过<code>require</code>加载资源是直接读取文件的，因此中间所需的时间可以忽略不计，但是在浏览器这种需要依赖 HTTP 获取资源的就不行了，资源的获取所需的时间不确定，这就导致必须使用异步机制，代表主要有 2 个：</p><ul><li><p>基于 <a href=http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition>AMD</a> 的 RequireJS</p></li><li><p>基于 <a href=https://github.com/cmdjs/specification/blob/master/draft/module.md>CMD</a> 的 SeaJS</p></li></ul><p>它们分别在浏览器实现了<code>define</code>、<code>require</code>及<code>module</code>的核心功能，虽然两者的目标是一致的，但是实现的方式或者说是思路，还是有些区别的，AMD 偏向于依赖前置，CMD 偏向于用到时才运行的思路，从而导致了依赖项的加载和运行时间点会不同，关于这 2 者的比较，网上有很多了，这里推荐几篇仅供参考：</p><ul><li>《<a href=https://lifesinger.wordpress.com/2011/05/17/the-difference-between-seajs-and-requirejs/>SeaJS 和 RequireJS 的异同</a>》</li><li>《<a href=https://div.io/topic/430>再谈 SeaJS 与 RequireJS 的差异</a>》</li></ul><p>本人就先接触了 SeaJS 后转到 RequireJS，虽然感觉 AMD 的模式写确实没有 CMD 这么符合一惯的语义逻辑，但是写了几个模块以后就习惯了，而且<strong>社区资源</strong>比较丰富的 AMD 阵营更加符合当时的项目需求（扯多了），下面分别写个例子做下直观的对比：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// CMD
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>define</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>require</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>var</span> <span class=nx>a</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;./a&#34;</span><span class=p>);</span> <span class=c1>// &lt;- 运行到此处才开始加载并运行模块a
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kd>var</span> <span class=nx>b</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;./b&#34;</span><span class=p>);</span> <span class=c1>// &lt;- 运行到此处才开始加载并运行模块b
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// more code ..
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// AMD
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>define</span><span class=p>([</span><span class=s2>&#34;./a&#34;</span><span class=p>,</span> <span class=s2>&#34;./b&#34;</span><span class=p>],</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=nx>b</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// &lt;- 前置声明，也就是在主体运行前就已经加载并运行了模块a和模块b
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// more code ..
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>通过例子，你可以看到除了语法上面的区别，这 2 者主要的差异还是在于：</p><blockquote><p>何时加载和运行依赖项？</p></blockquote><p>这也是 CommonJS 社区中质疑 AMD 最主要原因之一，不少人认为它破坏了规范，反观 CMD 模式，简单的去除<code>define</code>的外包装，这就是标准的 CommonJS 实现，所以说 CMD 是最贴近 CommonJS 的异步模块化方案，不过孰优孰劣，这里就不扯了，需求决定一切。</p><p>此外同一时期还出现了一个 UMD 的方案，其实它就是 AMD 与 CommonJS 的集合体，通过 IIFE 的前置条件判断，使一个模块既可以在浏览器运行，也可以在 Node.JS 中运行，举个例子：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// UMD
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>define</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>define</span><span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>en</span><span class=o>:</span> <span class=s2>&#34;Hello world!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>es</span><span class=o>:</span> <span class=s2>&#34;¡Hola mundo!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nx>ru</span><span class=o>:</span> <span class=s2>&#34;Привет мир!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>sayHello</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>})(</span>
+</span></span><span class=line><span class=cl>  <span class=k>typeof</span> <span class=nx>module</span> <span class=o>===</span> <span class=s2>&#34;object&#34;</span> <span class=o>&amp;&amp;</span> <span class=nx>module</span><span class=p>.</span><span class=nx>exports</span> <span class=o>&amp;&amp;</span> <span class=k>typeof</span> <span class=nx>define</span> <span class=o>!==</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=o>?</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>factory</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>module</span><span class=p>.</span><span class=nx>exports</span> <span class=o>=</span> <span class=nx>factory</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=o>:</span> <span class=nx>define</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>个人觉得最少用到的就是这个 UMD 模式了。</p><p>2015 年 6 月，<strong>ECMAScript2015</strong>也就是<strong>ES6</strong>发布了，JavaScript 终于在语言标准的层面上，实现了模块功能，使得在编译时就能确定模块的依赖关系，以及其输入和输出的变量，不像 CommonJS、AMD 之类的需要在运行时才能确定（例如 FIS 这样的工具只能预处理依赖关系，本质上还是运行时解析），成为浏览器和服务器通用的模块解决方案。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// lib/greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>en</span><span class=o>:</span> <span class=s1>&#39;Hello world!&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>es</span><span class=o>:</span> <span class=s1>&#39;¡Hola mundo!&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>ru</span><span class=o>:</span> <span class=s1>&#39;Привет мир!&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>export</span> <span class=kr>const</span> <span class=nx>getHello</span> <span class=o>=</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>export</span> <span class=kr>const</span> <span class=nx>sayHello</span> <span class=o>=</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>getHello</span><span class=p>(</span><span class=nx>lang</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// hello.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>import</span> <span class=p>{</span> <span class=nx>sayHello</span> <span class=p>}</span> <span class=nx>from</span> <span class=s1>&#39;./lib/greeting&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>sayHello</span><span class=p>(</span><span class=s1>&#39;ru&#39;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>与 CommonJS 用<code>require()</code>方法加载模块不同，在 ES6 中，<code>import</code>命令可以具体指定加载模块中用<code>export</code>命令暴露的接口（不指定具体的接口，默认加载<code>export default</code>），没有指定的是不会加载的，因此会在编译时就完成模块的加载，这种加载方式称为<strong>编译时加载</strong>或者<strong>静态加载</strong>。</p><p>而 CommonJS 的<code>require()</code>方法是在运行时才加载的：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// lib/greeting.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>helloInLang</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>en</span><span class=o>:</span> <span class=s2>&#34;Hello world!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>es</span><span class=o>:</span> <span class=s2>&#34;¡Hola mundo!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nx>ru</span><span class=o>:</span> <span class=s2>&#34;Привет мир!&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=kr>const</span> <span class=nx>getHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>helloInLang</span><span class=p>[</span><span class=nx>lang</span><span class=p>];</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>exports</span><span class=p>.</span><span class=nx>getHello</span> <span class=o>=</span> <span class=nx>getHello</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=nx>exports</span><span class=p>.</span><span class=nx>sayHello</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>lang</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>getHello</span><span class=p>(</span><span class=nx>lang</span><span class=p>));</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// hello.js
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>sayHello</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;./lib/greeting&#34;</span><span class=p>).</span><span class=nx>sayHello</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>sayHello</span><span class=p>(</span><span class=s2>&#34;ru&#34;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>可以看出，CommonJS 中是将整个模块作为一个对象引入，然后再获取这个对象上的某个属性。</p><p>因此 ES6 的<strong>编译时加载</strong>，在效率上面会提高不少，此外，还会带来一些其它的好处，比如引入宏（macro）和类型检验（type system）这些只能靠静态分析实现的功能。</p><p>可惜的是，目前浏览器和 Node.js 的支持程度都并不理想，截止发稿，也就只有 Chrome61+ 与 Safari10.1+ 才做到了部分支持。</p><p>不过可以通过 Babel 这类工具配合相关的 plugin（可以参考《<a href=https://itony.net/post/babel-note.html>Babel 笔记</a>》），转换为 ES5 的语法，这样就可以在 Node.js 运行起来了，如果想在浏览器上运行，可以添加 Babel 配置，为模块文件添上 AMD 的<code>define</code>函数作为外层，再并配合 RequireJS 之类的加载器即可。</p><p>更多关于 ES6 Modules 的资料，可以看一下《<a href=http://es6.ruanyifeng.com/#docs/module>ECMAScript 6 入门 - Module 的语法</a>》。</p><hr><h3 id=参考>参考</h3><ul><li><a href=https://zhuanlan.zhihu.com/p/26118022>精读 js 模块化发展</a></li><li><a href=https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity>History of JavaScript</a></li><li><a href=https://huangxuan.me/2015/07/09/js-module-7day/>JavaScript 模块化七日谈</a></li><li><a href=http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html>JavaScript Module Pattern: In-Depth</a></li><li><a href=https://github.com/seajs/seajs/issues/588>前端模块化开发那点历史</a></li><li><a href=https://medium.freecodecamp.org/javascript-modules-a-beginner-s-guide-783f7d7a5fcc>JavaScript Modules: A Beginner’s Guide</a></li></ul></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>tony</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2017-09-07</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/frontend/>FrontEnd</a>
+<a href=/tags/javascript/>Javascript</a></div><nav class=post-nav><a class=prev href=/javascript-random-number/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">JS生成有范围伪随机数</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/babel-note/><span class="next-text nav-default">Babel笔记</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zhujf620@email.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/tonyc726 class="iconfont icon-github" title=github></a>
+<a href=https://itony.net/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2017-
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>本站采用&nbsp;<a href=https://creativecommons.org/licenses/by-nc-nd/4.0/ style=color:#8a8a8a>CC BY-NC-ND 4.0</a>&nbsp;许可协议</span></span><div style=padding-top:5px;padding-bottom:10px><a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802008412" style=display:inline-block;text-decoration:none;height:20px;line-height:20px;color:#8a8a8a><img src=/gongan.png width=20 height=20 alt=浙公网安Logo style=margin-right:3px>浙公网安备33010802008412号</a>
+<span style="margin:0 .5em">|</span>
+<span><a href=http://www.beian.miit.gov.cn style=color:#8a8a8a>浙ICP备17024120号-1</a></span></div></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-83193985-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

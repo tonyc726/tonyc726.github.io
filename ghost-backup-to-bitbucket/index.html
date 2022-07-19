@@ -1,0 +1,139 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>备份Ghost至Bitbucket - Code & Life</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="tony"><meta name=description content="关于如何为 Ghost 做备份，Google 一下，你会找到有很多种方式，不过由于本博客使用了 Mysql 作为 Ghost 的数据库，平时自己又习惯于使用 Git 做版本管理，所以就衍"><meta name=keywords content="itony,blog"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://itony.net/ghost-backup-to-bitbucket/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin=anonymous><meta property="og:title" content="备份Ghost至Bitbucket"><meta property="og:description" content="关于如何为 Ghost 做备份，Google 一下，你会找到有很多种方式，不过由于本博客使用了 Mysql 作为 Ghost 的数据库，平时自己又习惯于使用 Git 做版本管理，所以就衍"><meta property="og:type" content="article"><meta property="og:url" content="https://itony.net/ghost-backup-to-bitbucket/"><meta property="article:section" content="post"><meta property="article:published_time" content="2017-07-17T18:08:08+08:00"><meta property="article:modified_time" content="2017-07-17T18:08:08+08:00"><meta itemprop=name content="备份Ghost至Bitbucket"><meta itemprop=description content="关于如何为 Ghost 做备份，Google 一下，你会找到有很多种方式，不过由于本博客使用了 Mysql 作为 Ghost 的数据库，平时自己又习惯于使用 Git 做版本管理，所以就衍"><meta itemprop=datePublished content="2017-07-17T18:08:08+08:00"><meta itemprop=dateModified content="2017-07-17T18:08:08+08:00"><meta itemprop=wordCount content="992"><meta itemprop=keywords content="Linux,VPS,Ghost,"><meta name=twitter:card content="summary"><meta name=twitter:title content="备份Ghost至Bitbucket"><meta name=twitter:description content="关于如何为 Ghost 做备份，Google 一下，你会找到有很多种方式，不过由于本博客使用了 Mysql 作为 Ghost 的数据库，平时自己又习惯于使用 Git 做版本管理，所以就衍"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>I'm Coder</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>I'm Coder</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>备份Ghost至Bitbucket</h1><div class=post-meta><span class=post-time>2017-07-17</span><div class=post-category><a href=/categories/hobbies/>Hobbies</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><ul><li></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><p>关于如何为 Ghost 做备份，Google 一下，你会找到有很多种方式，不过由于本博客使用了 Mysql 作为 Ghost 的数据库，平时自己又习惯于使用 Git 做版本管理，所以就衍生了一个用 Git 来备份博客数据的想法。</p><p>大致的思路就是，先用<code>mysqldump</code>备份 Ghost 的 database，将其压缩存储至 Ghost 根目录的<code>content/data</code>文件夹中，通过<code>git commit</code>将其添加入 Git 仓库，然后<code>push</code>至[Bitbucket]。</p><p>PS: 市面上有很多可以提供私有仓库的 Git 服务，孰优孰劣各有不同，这里就选用了自己常用的<a href=https://bitbucket.org/>Bitbucket</a>。</p><p>那么首先就来建立一个名为<code>cron_backup.sh</code>的文件，具体代码如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=cp>#!/bin/sh
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># Set variables</span>
+</span></span><span class=line><span class=cl><span class=nv>DB_NAME</span><span class=o>=</span><span class=s2>&#34;xxx&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>MYSQL_USER</span><span class=o>=</span><span class=s2>&#34;xxx&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>MYSQL_PASSWORD</span><span class=o>=</span><span class=s2>&#34;xxx&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>BACKUP_TIME</span><span class=o>=</span><span class=k>$(</span>date +<span class=s2>&#34;%Y%m%d%H%M&#34;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=nv>BACKUP_DIR</span><span class=o>=</span><span class=s2>&#34;path/to/ghost/content/data&#34;</span>
+</span></span><span class=line><span class=cl><span class=nv>FULLDATE</span><span class=o>=</span><span class=k>$(</span>date +<span class=s2>&#34;%Y-%d-%m %H:%M&#34;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Check current Git status and update</span>
+</span></span><span class=line><span class=cl>git status
+</span></span><span class=line><span class=cl>git pull origin HEAD
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 判断MYSQL是否启动,mysql没有启动则备份退出</span>
+</span></span><span class=line><span class=cl><span class=nv>MYSQL_PS</span><span class=o>=</span><span class=sb>`</span>ps -ef <span class=p>|</span>grep mysql <span class=p>|</span>wc -l<span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=nv>MYSQL_LISTEN</span><span class=o>=</span><span class=sb>`</span>netstat -an <span class=p>|</span>grep LISTEN <span class=p>|</span>grep 3306<span class=p>|</span>wc -l<span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=o>[</span><span class=nv>$MYSQL_PS</span> <span class=o>==</span> 0<span class=o>]</span> -o <span class=o>[</span><span class=nv>$MYSQL_LISTEN</span> <span class=o>==</span> 0<span class=o>]</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;ERROR:MySQL is not running! backup stop!&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;Welcome to use MySQL backup tools!&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 连接到mysql数据库，无法连接则备份退出</span>
+</span></span><span class=line><span class=cl>mysql -u<span class=nv>$MYSQL_USER</span> -p<span class=nv>$MYSQL_PASSWORD</span> <span class=s>&lt;&lt;end
+</span></span></span><span class=line><span class=cl><span class=s>SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = &#34;$DB_NAME&#34;;
+</span></span></span><span class=line><span class=cl><span class=s>exit
+</span></span></span><span class=line><span class=cl><span class=s>end</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>FLAG</span><span class=o>=</span><span class=sb>`</span><span class=nb>echo</span> <span class=nv>$?</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$FLAG</span> !<span class=o>=</span> <span class=s2>&#34;0&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;ERROR:Can&#39;t connect mysql server! backup stop!&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;MySQL connect ok! Please wait......&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>echo</span> <span class=s2>&#34;The database </span><span class=nv>$DB_NAME</span><span class=s2> backup start...&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=c1># 判断有没有定义备份的数据库，如果定义则开始备份，否则退出备份</span>
+</span></span><span class=line><span class=cl>  <span class=sb>`</span>mysqldump -hlocalhost -P3306 -u<span class=nv>$MYSQL_USER</span> -p<span class=nv>$MYSQL_PASSWORD</span> <span class=nv>$DB_NAME</span> --default-character-set<span class=o>=</span><span class=s2>&#34;utf8&#34;</span> <span class=p>|</span> gzip &gt; <span class=nv>$BACKUP_DIR</span>/<span class=nv>$BACKUP_TIME</span>.sql.gz<span class=sb>`</span>
+</span></span><span class=line><span class=cl>  <span class=nv>FLAG</span><span class=o>=</span><span class=sb>`</span><span class=nb>echo</span> <span class=nv>$?</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=o>[</span> <span class=nv>$FLAG</span> <span class=o>==</span> <span class=s2>&#34;0&#34;</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;database </span><span class=nv>$DB_NAME</span><span class=s2> success backup to </span><span class=nv>$BACKUP_DIR</span><span class=s2>/</span><span class=nv>$BACKUP_TIME</span><span class=s2>.sql.gz&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;database </span><span class=nv>$DB_NAME</span><span class=s2> backup fail!&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 删除过期备份，则进行删除操作，暂定为7天以前的备份数据</span>
+</span></span><span class=line><span class=cl>find <span class=nv>$BACKUP_DIR</span> -mtime +7 -exec rm -f <span class=o>{}</span> <span class=se>\;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Add to Git and commit</span>
+</span></span><span class=line><span class=cl>git add -A
+</span></span><span class=line><span class=cl>git commit -m <span class=s2>&#34;Automatic backup - </span><span class=nv>$FULLDATE</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>git push origin HEAD
+</span></span></code></pre></td></tr></table></div></div><p>以上脚本中的<code>DB_NAME</code>、<code>MYSQL_USER</code>、<code>MYSQL_PASSWORD</code>及<code>path/to/ghost/content/data</code>请自行替换。</p><p>接着你先为 Ghost 的根目录下初始化 Git，并连接 Bitbucket 远程仓库，如有疑问，可以 Google，这点在这里就不描述了。</p><p>现在，来测试一下这个脚本，如果遇到权限问题，请赋予当前用户<code>chmod +x</code>的权限，如果没有问题，你的备份脚本就已经 OK 了。</p><p>不过，如果仅仅是这样感觉还是麻烦了一些，做好能做个定时脚本，这时候我们就用到了<code>crontab</code>，为当前的用户添加一个定时任务吧，让系统自动每天凌晨帮你备份一次：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># crontab command</span>
+</span></span><span class=line><span class=cl><span class=m>00</span> <span class=m>00</span> * * * <span class=nb>cd</span> path/to/ghost <span class=o>&amp;&amp;</span> ./cron_backup.sh &gt; /dev/null 2&gt;<span class=p>&amp;</span><span class=m>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>这里有一点小提示，为何不是直接运行<code>path/to/ghost/cron_backup.sh</code>，因为有可能你执行<code>crontab</code>并非 Ghost 目录的拥有者，会导致 Git 操作失败。</p><p>以上想法及示例代码仅供参考。</p><h5 id=参考链接>参考链接</h5><ol><li><a href=https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/12.4.md>https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/12.4.md</a></li><li><a href=https://jabran.me/articles/automatic-database-backup-using-git-hosting>https://jabran.me/articles/automatic-database-backup-using-git-hosting</a></li><li><a href=https://gist.github.com/oodavid/2206527>https://gist.github.com/oodavid/2206527</a></li><li><a href=https://gist.github.com/pakcheong/6570839>https://gist.github.com/pakcheong/6570839</a></li><li><a href=https://zh.wikipedia.org/wiki/Cron>https://zh.wikipedia.org/wiki/Cron</a></li></ol></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>tony</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2017-07-17</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/linux/>Linux</a>
+<a href=/tags/vps/>VPS</a>
+<a href=/tags/ghost/>Ghost</a></div><nav class=post-nav><a class=prev href=/codeigniter-note/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Codeigniter折腾笔记</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/ssh-note/><span class="next-text nav-default">SSH一些常见问题</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zhujf620@email.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/tonyc726 class="iconfont icon-github" title=github></a>
+<a href=https://itony.net/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2017-
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>本站采用&nbsp;<a href=https://creativecommons.org/licenses/by-nc-nd/4.0/ style=color:#8a8a8a>CC BY-NC-ND 4.0</a>&nbsp;许可协议</span></span><div style=padding-top:5px;padding-bottom:10px><a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802008412" style=display:inline-block;text-decoration:none;height:20px;line-height:20px;color:#8a8a8a><img src=/gongan.png width=20 height=20 alt=浙公网安Logo style=margin-right:3px>浙公网安备33010802008412号</a>
+<span style="margin:0 .5em">|</span>
+<span><a href=http://www.beian.miit.gov.cn style=color:#8a8a8a>浙ICP备17024120号-1</a></span></div></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-83193985-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>

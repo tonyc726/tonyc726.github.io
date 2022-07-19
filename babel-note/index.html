@@ -1,0 +1,176 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Babel笔记 - Code & Life</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="tony"><meta name=description content="正如封面图所述，Babel作为一个 JavaScript 的语法编译器，可以将ES6/7/8代码转为ES5代码，从而在现有环境执行。 但是初次配置.babelrc的"><meta name=keywords content="itony,blog"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://itony.net/babel-note/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin=anonymous><meta property="og:title" content="Babel笔记"><meta property="og:description" content="正如封面图所述，Babel作为一个 JavaScript 的语法编译器，可以将ES6/7/8代码转为ES5代码，从而在现有环境执行。 但是初次配置.babelrc的"><meta property="og:type" content="article"><meta property="og:url" content="https://itony.net/babel-note/"><meta property="article:section" content="post"><meta property="article:published_time" content="2017-07-31T08:08:08+08:00"><meta property="article:modified_time" content="2017-07-31T08:08:08+08:00"><meta itemprop=name content="Babel笔记"><meta itemprop=description content="正如封面图所述，Babel作为一个 JavaScript 的语法编译器，可以将ES6/7/8代码转为ES5代码，从而在现有环境执行。 但是初次配置.babelrc的"><meta itemprop=datePublished content="2017-07-31T08:08:08+08:00"><meta itemprop=dateModified content="2017-07-31T08:08:08+08:00"><meta itemprop=wordCount content="3207"><meta itemprop=keywords content="Note,FrontEnd,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Babel笔记"><meta name=twitter:description content="正如封面图所述，Babel作为一个 JavaScript 的语法编译器，可以将ES6/7/8代码转为ES5代码，从而在现有环境执行。 但是初次配置.babelrc的"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>I'm Coder</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>Home</li></a><a href=/post/><li class=mobile-menu-item>Archives</li></a><a href=/tags/><li class=mobile-menu-item>Tags</li></a><a href=/categories/><li class=mobile-menu-item>Categories</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>I'm Coder</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>Home</a></li><li class=menu-item><a class=menu-item-link href=/post/>Archives</a></li><li class=menu-item><a class=menu-item-link href=/tags/>Tags</a></li><li class=menu-item><a class=menu-item-link href=/categories/>Categories</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>Babel笔记</h1><div class=post-meta><span class=post-time>2017-07-31</span><div class=post-category><a href=/categories/web-technologies/>Web Technologies</a></div></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>Contents</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#pluginpresetstage-x-的关系>Plugin、Preset、Stage-X 的关系</a></li><li><a href=#babel-polyfill与babel-runtime的选择><code>babel-polyfill</code>与<code>babel-runtime</code>的选择</a><ul><li><a href=#参考资料>参考资料</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><p>正如封面图所述，<a href=https://babeljs.io>Babel</a>作为一个 JavaScript 的语法编译器，可以将<code>ES6/7/8</code>代码转为<code>ES5</code>代码，从而在现有环境执行。</p><p>但是初次配置<code>.babelrc</code>的时候，各种<code>presets</code>、<code>plugins</code>看的眼花缭乱，不知道如何下手，下面就自己学习 Babel 时遇到的问题做一下总结：</p><blockquote><p>如果你是初次接触 babel，推荐阅读阮一峰的《<a href=http://www.ruanyifeng.com/blog/2016/01/babel.html>Babel 入门教程</a>》</p></blockquote><h2 id=pluginpresetstage-x-的关系>Plugin、Preset、Stage-X 的关系</h2><p>按照 Babel 官网的<a href=http://babeljs.io/docs/plugins/>介绍</a>，其实<strong>Preset</strong>和<strong>Stage-X</strong>都是归属到<strong>Plugin</strong>里面的，只不过所覆盖的范围不同而已。</p><p>举个例子，如果需要转换 ES2015(ES6)的语法，那么你可以在<code>.babelrc</code>的<code>plugins</code>中按需引入<code>check-es2015-constants</code>、<code>es2015-arrow-functions</code>、<code>es2015-block-scoped-functions</code>等等几十个不同作用的 plugin：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=c1>// .babelrc
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;plugins&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;check-es2015-constants&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;es2015-arrow-functions&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;es2015-block-scoped-functions&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// ...
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>但是 Babel 团队为了方便，将<a href=http://babeljs.io/docs/plugins/preset-es2015/>同属 ES2015 的几十个 Transform Plugins</a>集合到<code>babel-preset-es2015</code>一个 Preset 中，这样你只需要在<code>.babelrc</code>的<code>presets</code>加入<code>es2015</code>一个配置就可以完成全部 ES2015 语法的支持了：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=c1>// .babelrc
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;presets&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;es2015&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>另外，不论是 Plugin 还是 Preset，有不少都有单独属于自己的配置项，具体如何操作的可以看一下<a href=http://babeljs.io/docs/plugins/#plugin-preset-options>官网的说明</a>。</p><p>上面介绍了 Plugin 与 Preset，那么 Stage-X 就很好理解了，<code>stage-0</code>、<code>stage-1</code>、<code>stage-2</code>、<code>stage-3</code>、~~<code>stage-4</code>~~分别对应的就是进入标准之前的 5 个阶段，不同<code>stage-x</code>之间存在依赖关系，数字越小，阶段越靠后，靠后阶段包含前面阶段所有的功能，简单理解就是<code>stage-0</code>包含<code>stage-1/2/3</code>的内容，所以如果你不知道需要哪个<code>stage-x</code>的话，直接引入<code>stage-0</code>就好了。</p><blockquote><p>PS: <code>babel-preset-stage-4</code>已经整合入 Presets 不单独发布了。</p></blockquote><p>以上就是一些基础概念，目前，官方推荐使用<a href=http://babeljs.io/docs/plugins/preset-env/><code>babel-preset-env</code></a>，它可以根据你的配置结合<a href=https://github.com/kangax/compat-table><code>compat-table</code></a>来帮你自动引入你需要的 plugins，它有很多<a href=http://babeljs.io/docs/plugins/preset-env/#options>配置项</a>，下面介绍几个常用的：</p><ul><li><p><strong>targets</strong>： <code>{ [string]: number | string }</code>，默认 <code>{}</code>；<br>需要支持的环境，可选例如：<code>chrome</code>, <code>edge</code>, <code>firefox</code>, <code>safari</code>, <code>ie</code>, <code>ios</code>, <code>node</code>，甚至可以指定版本，如<code>node: "6.10"</code>或者<code>node: "current"</code>代表使用当前的版本；</p></li><li><p><strong>targets.node</strong>： <code>number | string | "current" | true</code>；<br>指定<code>node</code>的版本，例如：<code>6.10</code>；</p></li><li><p><strong>targets.browsers</strong>： <code>Array&lt;string> | string</code>；<br>指定需要兼容的浏览器清单，具体参考<a href=https://github.com/ai/browserslist>browserslist</a>，例如：<code>["last 2 versions", "safari >= 7"]</code>；</p></li></ul><p>例如需要配置兼容<code>["last 2 versions", "safari >= 7"]</code>的<code>babel-preset-env</code>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=c1>// .babelrc
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;presets&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span><span class=s2>&#34;env&#34;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;targets&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;browsers&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;last 2 versions&#34;</span><span class=p>,</span> <span class=s2>&#34;safari &gt;= 7&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}]</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>此外，不同的 plugins 和 presets 或许有些功能是重复的，有些存在依赖关系，在配置的时候还有前后顺序的不同，那么 Babel 在运行的时候是怎么处理的呢？总结一下，规律大概有以下几点：</p><ol><li>plugins 优先于 presets 进行编译；</li><li>plugins 按照数组的 index 增序(从数组第一个到最后一个)进行编译；</li><li>presets 按照数组的 index 倒序(从数组最后一个到第一个)进行编译，因为作者认为大部分会把 presets 写成<code>["es2015", "stage-0"]</code>，具体细节可以看<a href=https://github.com/babel/notes/blob/master/2016-08/august-01.md#potential-api-changes-for-traversal>这个</a>。</li></ol><blockquote><p>摘自《<a href=https://excaliburhan.com/post/babel-preset-and-plugins.html>如何写好.babelrc？Babel 的 presets 和 plugins 配置解析</a>》</p></blockquote><h2 id=babel-polyfill与babel-runtime的选择><code>babel-polyfill</code>与<code>babel-runtime</code>的选择</h2><p>Babel 默认只转换新的 JavaScript 语法，而不转换新的 API，比如<code>Iterator</code>、<code>Generator</code>、<code>Set</code>、<code>Maps</code>、<code>Promise</code>等等全局对象，以及一些定义在全局对象上的方法（比如<code>Object.assign</code>）都不会转码，具体的可以参考<code>babel-plugin-transform-runtime</code>模块的<a href=https://github.com/babel/babel/blob/master/packages/babel-plugin-transform-runtime/src/definitions.js>definitions.js</a>文件。</p><p><code>babel-polyfill</code>与<code>babel-runtime</code>就是为了解决这种全局对象或者全局对象方法不足的问题，而诞生的 2 种解决方式。</p><blockquote><p>当然，你还可以用<code>promise-polyfill</code>此类 Polyfill 解决全局对象的问题；</p><p>或者用<code>lodash</code>此类 Utils 解决<code>Object.assign</code>这种方法扩展的问题。</p></blockquote><p>先说说<code>babel-polyfill</code>，它的做法比较暴力，就是将全局对象通通污染一遍，这样做的坏处有几点：</p><ol><li>可能会增加很多根本没有用到的 polyfill；</li><li>可能会污染子模块的局部作用域，严重的或许会导致冲突；</li></ol><p>但是，这样做也有好处，如果你的运行环境比较 low，比如说 Android 一些老机子，而你有需要大量使用<code>Promise</code>、<code>Object.assign</code>、<code>Array.find</code>之类的全局对象或者其所属方法，那么使用<code>babel-polyfill</code>，绝对是一劳永逸。</p><p>接着，再来说说<code>babel-runtime</code>，相对而言，它的处理方式比较温柔，套用步步高的广告词就是哪里需要加哪里，比如说你需要<code>Promise</code>，你只需要<code>import Promise from 'babel-runtime/core-js/promise'</code>即可，这样不仅避免污染全局对象，而且可以减少不必要的代码。</p><p>不过，如果 N 个文件都需要<code>Promise</code>，难道得一个个文件的加<code>import Promise from 'babel-runtime/core-js/promise'</code>么，显然不是，Babel 已经为这样情况考虑过了，只需要使用<code>babel-plugin-transform-runtime</code>就可以轻松的帮你省去手动<code>import</code>的痛苦，而且，它还做了公用方法的抽离，哪怕你有 100 个模块使用了<code>Promise</code>，但是 promise 的 polyfill 仅仅存在 1 份，所有要的地方都是引用一地方，具体的配置参考如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=c1>// .babelrc
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;presets&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;env&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;stage-0&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;plugins&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;transform-runtime&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;comments&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>此外，需要注意的是，如果你直接写<code>[1,2,3].find((i) => (i === 1))</code>这样的语法，<code>babel-runtime</code>处理以后的结果并不会引入<code>Array.find</code>相关的 polyfill：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// 源码
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>].</span><span class=nx>find</span><span class=p>((</span><span class=nx>i</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>i</span> <span class=o>===</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 转码后
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>].</span><span class=nx>find</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>i</span> <span class=o>===</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>你需要使用<code>Array.find</code>才可以：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=c1>// 源码
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nb>Array</span><span class=p>.</span><span class=nx>find</span><span class=p>([</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=p>(</span><span class=nx>i</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>i</span> <span class=o>===</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 转码后
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>var</span> <span class=nx>_find</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s2>&#34;babel-runtime/core-js/array/find&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>_find2</span> <span class=o>=</span> <span class=nx>_interopRequireDefault</span><span class=p>(</span><span class=nx>_find</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>_interopRequireDefault</span><span class=p>(</span><span class=nx>obj</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>obj</span> <span class=o>&amp;&amp;</span> <span class=nx>obj</span><span class=p>.</span><span class=nx>__esModule</span> <span class=o>?</span> <span class=nx>obj</span> <span class=o>:</span> <span class=p>{</span> <span class=k>default</span><span class=o>:</span> <span class=nx>obj</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>_find2</span><span class=p>.</span><span class=k>default</span><span class=p>)([</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=nx>i</span> <span class=o>===</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>当然，你也可以在需要的地方引入<code>core-js/fn/array/find</code>或者<code>lodash/find</code>作为一个 function 来使用：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=kr>import</span> <span class=nx>ArrayFind</span> <span class=nx>from</span> <span class=s2>&#34;core-js/fn/array/find&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>ArrayFind</span><span class=p>([</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>],</span> <span class=p>(</span><span class=nx>i</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>i</span> <span class=o>===</span> <span class=mi>1</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>不过，如果你执意要使用<code>[1,2,3].find((i) => (i === 1))</code>这样的语法，那么只能对<code>Array.prototype</code>进行扩展，增加一个<code>find</code>的方法了，<code>babel-polyfill</code>就可以实现，当然你也可以自己做扩展。</p><blockquote><p>写在最后，我在<a href=https://github.com/tonyc726/babel-note>Github 上开了一个项目</a>，做了几个测试，有兴趣的可以一起来试试看。</p></blockquote><hr><blockquote><p>2017.7.30 补充</p></blockquote><p>关于<code>babel</code>与<code>webpack</code>结合使用的教程网上已经有很多了，有不少却还在用<code>v1.*</code>的版本（不推荐），从而在过渡到<code>v2.*</code>或者<code>v3.*</code>(推荐)的版本时，碰到一个关于<code>babel</code>的配置问题，示例如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=c1>// .babelrc - webpack v1.*
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;presets&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;env&#34;</span><span class=p>,</span> <span class=s2>&#34;stage-0&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=c1>// .babelrc - webpack v2.* - v3.*
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;presets&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>[</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;env&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;modules&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>],</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;stage-0&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>很明显，一眼就能看出相对于<code>v1.*</code>的版本，<code>v2.*</code>或者<code>v3.*</code>版本多了<code>"modules": false</code>这项配置，如果仔细看<a href=https://webpack.js.org/guides/migrating/#mixing-es2015-with-amd-and-commonjs>官网的迁移指南</a>，你就能明白了，以前你可能需要用<code>babel</code>来将<code>ES6</code>的模块语法转换为<code>AMD</code>、<code>CommonJS</code>、<code>UMD</code>之类的模块化标准语法，但是现在 webpack 已经把这个事情做了，所以就不需要<code>babel</code>来做了，但是<code>babel</code>配置项中的<code>modules</code><a href=https://babeljs.io/docs/plugins/preset-env/#optionsmodules>默认值</a>是<code>commonjs</code>，所以你需要将<code>modules</code>设置为<code>false</code>才行，不然就冲突了。</p><hr><h3 id=参考资料>参考资料</h3><ol><li><a href=http://www.ruanyifeng.com/blog/2016/01/babel.html>http://www.ruanyifeng.com/blog/2016/01/babel.html</a></li><li><a href=https://excaliburhan.com/post/babel-preset-and-plugins.html>https://excaliburhan.com/post/babel-preset-and-plugins.html</a></li><li><a href="https://segmentfault.com/q/1010000005596587?from=singlemessage&isappinstalled=1">https://segmentfault.com/q/1010000005596587?from=singlemessage&isappinstalled=1</a></li><li><a href=https://github.com/brunoyang/blog/issues/20>https://github.com/brunoyang/blog/issues/20</a></li><li><a href=https://github.com/lmk123/blog/issues/45>https://github.com/lmk123/blog/issues/45</a></li><li><a href=http://www.cnblogs.com/flyingzl/p/5501247.html>http://www.cnblogs.com/flyingzl/p/5501247.html</a></li></ol></div><div class=post-copyright><p class=copyright-item><span class=item-title>Author</span>
+<span class=item-content>tony</span></p><p class=copyright-item><span class=item-title>LastMod</span>
+<span class=item-content>2017-07-31</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/note/>Note</a>
+<a href=/tags/frontend/>FrontEnd</a></div><nav class=post-nav><a class=prev href=/javascript-module-history/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">JavaScript模块化开发的演进历程</span>
+<span class="prev-text nav-mobile">Prev</span></a>
+<a class=next href=/python-note/><span class="next-text nav-default">Python的笔记</span>
+<span class="next-text nav-mobile">Next</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zhujf620@email.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/tonyc726 class="iconfont icon-github" title=github></a>
+<a href=https://itony.net/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2017-
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>本站采用&nbsp;<a href=https://creativecommons.org/licenses/by-nc-nd/4.0/ style=color:#8a8a8a>CC BY-NC-ND 4.0</a>&nbsp;许可协议</span></span><div style=padding-top:5px;padding-bottom:10px><a target=_blank href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802008412" style=display:inline-block;text-decoration:none;height:20px;line-height:20px;color:#8a8a8a><img src=/gongan.png width=20 height=20 alt=浙公网安Logo style=margin-right:3px>浙公网安备33010802008412号</a>
+<span style="margin:0 .5em">|</span>
+<span><a href=http://www.beian.miit.gov.cn style=color:#8a8a8a>浙ICP备17024120号-1</a></span></div></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-83193985-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"))</script><script async src=https://www.google-analytics.com/analytics.js></script></body></html>
