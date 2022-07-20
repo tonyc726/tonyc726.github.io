@@ -33,7 +33,7 @@ jobs:
           BRANCH: gh-pages
           FOLDER: public
       - name: Deploy itony.net
-        uses: burnett01/rsync-deployments@5.2
+        uses: burnett01/rsync-deployments@4.1
         with:
           switches: -avzr --delete
           path: public/
