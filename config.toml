@@ -60,7 +60,7 @@ copyright = "本站采用&nbsp;<a href=\"https://creativecommons.org/licenses/by
   gitRepo = ""
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "I'm Coder"        # default: the title value    # 默认值: 上面设置的title值
+  logoTitle = "I'm A Coder"        # default: the title value    # 默认值: 上面设置的title值
   keywords = ["itony", "blog"]
   description = "itony's code & life."
 
