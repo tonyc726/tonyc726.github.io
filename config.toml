@@ -1,12 +1,12 @@
 baseURL = "https://itony.net"
 languageCode = "en"
-defaultContentLanguage = "en"                             # en / zh-cn / ... (This field determines which i18n file to use)
+defaultContentLanguage = "zh-cn"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "Code & Life"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
 buildDrafts = false
-theme = "even"
+theme = "PaperMod"
 enableGitInfo = false # use git commit log to generate lastmod record # 可根据 Git 中的提交生成最近更新记录。
 
 # Syntax highlighting by Chroma. NOTE: Don't enable `highlightInClient` and `chroma` at the same time!
