@@ -4,7 +4,7 @@
   </a>
 </p>
 
-<h1 align="center"><a href="//itony.net"><strong>iTony.net</strong></a><br/><i>Code & Life</i></h1>
+<h1 align="center"><a href="//itony.net"><strong>iTony.net</strong></a><br/><i>Life & Code</i></h1>
 
 ## 博客简介
 
