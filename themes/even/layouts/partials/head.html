@@ -48,11 +48,11 @@
 {{- end -}}
 
 <!-- Favicon and Touch icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="{{ " apple-touch-icon.png" | relURL }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ " favicon-32x32.png" | relURL }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ " favicon-16x16.png" | relURL }}">
-<link rel="manifest" href="{{ " manifest.json" | relURL }}">
-<link rel="mask-icon" href="{{ " safari-pinned-tab.svg" | relURL }}" color="#5bbad5">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ "favicon-32x32.png" | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ "favicon-16x16.png" | relURL }}">
+<link rel="manifest" href="{{ "manifest.json" | relURL }}">
+<link rel="mask-icon" href="{{ "safari-pinned-tab.svg" | relURL }}" color="#5bbad5">
 
 <!-- debug -->
 {{- if .Site.Params.debug -}}
@@ -73,12 +73,12 @@
 {{ if .Site.Params.fancybox }}{{ .Site.Params.publicCDN.fancyboxCSS | safeHTML }}{{ end }}
 {{- else -}}
 {{ if .Site.Params.fancybox }}
-<link href="{{ " lib/fancybox/jquery.fancybox-3.1.20.min.css" | relURL }}" rel="stylesheet">{{ end }}
+<link href="{{ "lib/fancybox/jquery.fancybox-3.1.20.min.css" | relURL }}" rel="stylesheet">{{ end }}
 {{- end -}}
 
 <!-- custom css -->
 {{ range .Site.Params.customCSS -}}
-<link rel="stylesheet" href="{{ " /css/" | relURL }}{{ . }}">
+<link rel="stylesheet" href="{{ "/css/" | relURL }}{{ . }}">
 {{ end }}
 
 {{/* NOTE: These Hugo Internal Templates can be found starting at
