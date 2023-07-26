@@ -39,10 +39,6 @@
 # Go workspace file
 go.work
 
-### Go Patch ###
-/vendor/
-/Godeps/
-
 ### Hugo ###
 # Generated files by hugo
 /public/
@@ -381,3 +377,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/go,git,vim,hugo,linux,macos,windows,jetbrains+all,node
+.vscode/settings.json
