@@ -20,7 +20,7 @@
 
 Hugo 站点本身不依赖 Node。`package.json` 只服务 `scripts/` 下的本地 Markdown 处理脚本（当前针对 `content/post/hugo-img-qiniu.md` 做 AST 解析/改写实验）。
 
-需要 Node.js 20+（建议 22 LTS）。安装与运行：
+需要 Node.js 24.x（`package.json` `engines` / `.nvmrc`；本地 20+ 一般也能跑脚本）。安装与运行：
 
 ```bash
 npm install
@@ -38,6 +38,8 @@ npm run format
 ```
 
 VS Code 调试 `scripts/*.ts` 时使用 `.vscode/launch.json` 里的 **TS File Debug**（通过 `tsx` 加载）。
+
+Vercel 预览会读 `engines.node`（`24.x`）覆盖构建用的 Node 版本。若仪表盘 **Project Settings → Build and Deployment → Node.js Version** 仍是已停用的 `18.x`，有时仍需在控制台改成 `24.x`（仓库无法改这项设置）。
 
 ## 版权声明
 

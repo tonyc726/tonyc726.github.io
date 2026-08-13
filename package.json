@@ -8,6 +8,9 @@
   },
   "private": false,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "start": "tsx ./scripts/index.ts",
     "start:commonmark": "tsx ./scripts/index.commonmark.ts",
