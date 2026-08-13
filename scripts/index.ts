@@ -1,8 +1,11 @@
-import * as path from 'path';
-import * as fs from 'fs';
-import * as unified from 'unified';
-import * as remarkParse from 'remark-parse';
-import * as remarkStringify from 'remark-stringify';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import remarkParse from 'remark-parse';
+import remarkStringify from 'remark-stringify';
+import { unified } from 'unified';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 (async () => {
   const postDirPath = path.resolve(__dirname, '../content/post');

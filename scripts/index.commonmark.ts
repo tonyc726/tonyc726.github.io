@@ -1,6 +1,9 @@
-import * as path from 'path';
-import * as fs from 'fs';
-import { Parser, Renderer, HtmlRenderer } from 'commonmark';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Parser, Renderer } from 'commonmark';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 (async () => {
   const reader = new Parser();

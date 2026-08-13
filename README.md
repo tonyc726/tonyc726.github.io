@@ -16,6 +16,29 @@
 - Tcloud: https://itony.net
 - Github Page: https://tonyc726.github.io
 
+## Node 辅助脚本
+
+Hugo 站点本身不依赖 Node。`package.json` 只服务 `scripts/` 下的本地 Markdown 处理脚本（当前针对 `content/post/hugo-img-qiniu.md` 做 AST 解析/改写实验）。
+
+需要 Node.js 20+（建议 22 LTS）。安装与运行：
+
+```bash
+npm install
+
+# remark / unified：解析并再序列化一篇文章
+npm start
+
+# commonmark：遍历 AST 并改写图片 destination
+npm run start:commonmark
+
+# 静态检查
+npm run typecheck
+npm run lint
+npm run format
+```
+
+VS Code 调试 `scripts/*.ts` 时使用 `.vscode/launch.json` 里的 **TS File Debug**（通过 `tsx` 加载）。
+
 ## 版权声明
 
 本博客所有文章除特别声明外，均采用 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可协议。
