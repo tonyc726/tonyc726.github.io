@@ -1,5 +1,5 @@
 baseURL = "https://itony.net"
-languageCode = "en"
+locale = "zh-CN"
 defaultContentLanguage = "zh-cn"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "Life & Code"
 preserveTaxonomyNames = true
@@ -9,20 +9,18 @@ buildDrafts = false
 theme = "even"
 enableGitInfo = false # use git commit log to generate lastmod record # 可根据 Git 中的提交生成最近更新记录。
 
-# Syntax highlighting by Chroma. NOTE: Don't enable `highlightInClient` and `chroma` at the same time!
-pygmentsOptions = "linenos=table"
-pygmentsCodefences = true
-pygmentsUseClasses = true
-pygmentsCodefencesGuessSyntax = true
+# Syntax highlighting by Chroma —— 配置已迁移到下方的 [markup.highlight]
+# NOTE: Don't enable `highlightInClient` and `chroma` at the same time!
 
 hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否包含 中文\日文\韩文
-paginate = 5                                              # 首页每页显示的文章数
-disqusShortname = ""      # disqus_shortname
-googleAnalytics = "UA-83193985-1"      # UA-XXXXXXXX-X
-copyright = "本站采用&nbsp;<a href=\"https://creativecommons.org/licenses/by-nc-nd/4.0/\" style=\"color:#8a8a8a\">CC BY-NC-ND 4.0</a>&nbsp;许可协议"            # default: author.name ↓        # 默认为下面配置的author.name ↓
 
-[author]                  # essential                     # 必需
-  name = "tony"
+[services]
+  [services.googleAnalytics]
+    id = "G-ZDXHWFSN5X"   # GA4 衡量 ID（https://analytics.google.com 后台获取）
+
+
+[pagination]
+  pagerSize = 5                                             # 首页每页显示的文章数
 
 [sitemap]                 # essential                     # 必需
   changefreq = "weekly"
@@ -51,6 +49,9 @@ copyright = "本站采用&nbsp;<a href=\"https://creativecommons.org/licenses/by
   url = "/categories/"
 
 [params]
+  author.name = "tony"
+  copyright = "本站采用&nbsp;<a href=\"https://creativecommons.org/licenses/by-nc-nd/4.0/\" style=\"color:#8a8a8a\">CC BY-NC-ND 4.0</a>&nbsp;许可协议"
+
   version = "4.x"           # Used to give a friendly message when you have an incompatible update
   debug = false             # If true, load `eruda.min.js`. See https://github.com/liriliri/eruda
 
@@ -192,6 +193,13 @@ copyright = "本站采用&nbsp;<a href=\"https://creativecommons.org/licenses/by
 
 # see https://gohugo.io/getting-started/configuration-markup
 [markup]
+  [markup.highlight]
+    # 等价于旧版的 pygmentsOptions="linenos=table" / pygmentsCodefences / pygmentsUseClasses / pygmentsCodefencesGuessSyntax
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
   [markup.tableOfContents]
     startLevel = 1
   [markup.goldmark.renderer]

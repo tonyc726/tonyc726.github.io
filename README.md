@@ -11,10 +11,28 @@
 [![made-with-Go](https://img.shields.io/badge/Made%20with-hugo-1f425f.svg)](https://gohugo.io/)
 ![Deploy on push events](https://github.com/tonyc726/tonyc726.github.io/workflows/Deploy%20on%20push%20events/badge.svg?branch=main)
 
-基于 Hugo，使用 Github Actions 自动构建，部署到：
+基于 Hugo（extended 版，CI 锁定 `0.166.0`，见 `.github/workflows/main.yml`），使用 Github Actions 自动构建，部署到：
 
 - Tcloud: https://itony.net
 - Github Page: https://tonyc726.github.io
+
+## 写作工作流
+
+本地需要 Hugo **extended** 版（主题使用 Sass）：`brew install hugo`。
+
+```bash
+# 新建文章（draft: true，不会发布）
+hugo new content post/文章标题.md
+
+# 本地预览（含草稿，改动即刷新）：http://localhost:1313
+hugo server -D
+
+# 发布：把文章的 draft 改为 false（或删掉该行），push 到 main 即自动构建部署
+```
+
+文章 front matter 可用字段参考 `archetypes/default.md` 与既有文章；常用：`title`、`date`、`draft`、`tags`、`categories`、`toc`、`mathjax`。
+
+> 注意：`hugo --gc --minify` 异常中断可能残留 `.hugo_build.lock` 导致后续构建卡死，删掉该文件即可（`hugo server` 不受影响）。
 
 ## Node 辅助脚本
 
