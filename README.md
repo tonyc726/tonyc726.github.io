@@ -11,10 +11,24 @@
 [![made-with-Go](https://img.shields.io/badge/Made%20with-hugo-1f425f.svg)](https://gohugo.io/)
 ![Deploy on push events](https://github.com/tonyc726/tonyc726.github.io/workflows/Deploy%20on%20push%20events/badge.svg?branch=main)
 
-基于 Hugo（extended 版，CI 锁定 `0.166.0`，见 `.github/workflows/main.yml`），使用 Github Actions 自动构建，部署到：
+基于 Hugo（extended 版，锁定 `0.166.0`），push 到 `main` 后由 GitHub Actions 自动构建并部署，见下文「部署架构」。
 
-- Tcloud: https://itony.net
-- Github Page: https://tonyc726.github.io
+## 部署架构
+
+```
+push → main
+  └─ GitHub Actions (.github/workflows/main.yml)
+       ├─ hugo --gc --minify  (Hugo extended 0.166.0)
+       ├─ → gh-pages 分支 ── GitHub Pages: https://tonyc726.github.io
+       │                    └─ Cloudflare Pages（项目 itony）监听 gh-pages 自动发布
+       └─ rsync → Tcloud 服务器: https://itony.net  (secrets.DEPLOY_*)
+```
+
+注意（平台侧设置，仓库文件无法覆盖，改动需到各平台控制台）：
+
+- **Vercel**：自动识别为 Hugo 项目时默认安装远古版本 0.58.2，解析不了 `config.toml` 的 dotted key，也无法兼容主题 API。需在 Project Settings → **Environment Variables** 设置 `HUGO_VERSION=0.166.0`（改后需 Redeploy 生效）。
+- **Cloudflare Pages**：项目 Node.js Version 不能是已停用的旧版（曾因 `18.x` 被拒，需在 Project Settings → Build & deployment 设为 `24.x`）。
+- **升级 Hugo 时**：同步更新两处 —— `main.yml` 的 `hugo-version` 和 Vercel 的 `HUGO_VERSION`。
 
 ## 写作工作流
 
@@ -56,8 +70,6 @@ npm run format
 ```
 
 VS Code 调试 `scripts/*.ts` 时使用 `.vscode/launch.json` 里的 **TS File Debug**（通过 `tsx` 加载）。
-
-Vercel 预览会读 `engines.node`（`24.x`）覆盖构建用的 Node 版本。若仪表盘 **Project Settings → Build and Deployment → Node.js Version** 仍是已停用的 `18.x`，有时仍需在控制台改成 `24.x`（仓库无法改这项设置）。
 
 ## 版权声明
 
