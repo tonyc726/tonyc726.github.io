@@ -57,6 +57,7 @@
           init({
             el: '#waline-comments',
             serverURL: {{ .walineServer | jsonify | safeJS }},
+            turnstileKey: {{ .turnstileKey | jsonify | safeJS }},
             path: window.location.pathname,
             dark: 'auto',
           });
