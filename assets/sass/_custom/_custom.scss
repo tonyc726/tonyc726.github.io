@@ -70,6 +70,69 @@
   }
 }
 
+// ---------- Waline 评论区：加载骨架屏与失败态 ----------
+.post-comments {
+  margin-top: 20px;
+}
+
+.comment-skeleton {
+  padding: 15px 0;
+
+  .comment-skeleton-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .comment-skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ece9e0;
+    flex-shrink: 0;
+  }
+
+  .comment-skeleton-line {
+    display: block;
+    height: 12px;
+    border-radius: 6px;
+    background: #ece9e0;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .comment-skeleton-box {
+    height: 120px;
+    border-radius: 6px;
+    background: #f1eee6;
+  }
+
+  .comment-skeleton-avatar,
+  .comment-skeleton-line,
+  .comment-skeleton-box {
+    animation: comment-skeleton-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes comment-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.comment-fallback {
+  padding: 20px;
+  border: 1px dashed #cacaca;
+  border-radius: 6px;
+  color: #8a8a8a;
+  font-size: 14px;
+  text-align: center;
+
+  a {
+    color: #c05b4d;
+  }
+}
+
 // ---------- 暗色模式 ----------
 // 说明：代码块（Chroma 高亮）保留浅色底，因为语法配色为亮色设计。
 @media (prefers-color-scheme: dark) {
@@ -91,6 +154,27 @@
 
   ::selection {
     color: #fff;
+  }
+
+  // Waline 骨架屏与失败态
+  .comment-skeleton {
+    .comment-skeleton-avatar,
+    .comment-skeleton-line {
+      background: $dark-border;
+    }
+
+    .comment-skeleton-box {
+      background: $dark-panel;
+    }
+  }
+
+  .comment-fallback {
+    border-color: $dark-border;
+    color: $dark-gray;
+
+    a {
+      color: #d4837a;
+    }
   }
 
   // 移动端抽屉面板

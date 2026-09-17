@@ -1,9 +1,11 @@
 {{ if and .IsPage (ne .Params.comment false) -}}
+{{- $system := .Params.comment | default "waline" -}}
 
-  <!-- giscus (https://giscus.app)，基于 GitHub Discussions -->
+{{- if eq $system "giscus" }}
+  {{/* 基于 GitHub Discussions 的评论（/discuss/ 页面及显式指定 comment: giscus 的文章） */}}
   {{- with .Site.Params.giscus -}}
     {{- if and .enable .repoId .categoryId -}}
-  <div class="post-comments">
+  <div class="post-comments giscus-comments">
     <script src="https://giscus.app/client.js"
             data-repo="{{ .repo }}"
             data-repo-id="{{ .repoId }}"
@@ -21,9 +23,51 @@
             async>
     </script>
   </div>
-    {{- else if .enable -}}
-  <!-- giscus 已启用但缺少 repoId / categoryId：请访问 https://giscus.app 生成后填入 config.toml 的 [params.giscus] -->
     {{- end -}}
   {{- end -}}
+
+{{- else }}
+  {{/* Waline 自托管评论（默认）：静态资源本地托管，API 走 blog-waline.itony.net */}}
+  {{- with .Site.Params.comments -}}
+  <div id="waline-comments" class="post-comments">
+    <div class="comment-skeleton" aria-label="评论加载中">
+      <div class="comment-skeleton-header">
+        <span class="comment-skeleton-avatar"></span>
+        <span class="comment-skeleton-line" style="width: 30%"></span>
+      </div>
+      <div class="comment-skeleton-line"></div>
+      <div class="comment-skeleton-line" style="width: 85%"></div>
+      <div class="comment-skeleton-box"></div>
+    </div>
+    <div class="comment-fallback" hidden>
+      <p>评论区加载失败（可能是网络或拦截插件）。你仍然可以<a href="/discuss/">前往 GitHub Discussions 页面</a>参与讨论。</p>
+    </div>
+  </div>
+  <link rel="stylesheet" href="{{ "lib/waline/waline.css" | relURL }}">
+  <script type="module">
+    (() => {
+      const container = document.getElementById('waline-comments');
+      const showFallback = () => {
+        container.querySelector('.comment-skeleton')?.remove();
+        const f = container.querySelector('.comment-fallback');
+        if (f) f.hidden = false;
+      };
+      import({{ "lib/waline/waline.js" | relURL | jsonify | safeJS }})
+        .then(({ init }) => {
+          init({
+            el: '#waline-comments',
+            serverURL: {{ .walineServer | jsonify | safeJS }},
+            path: window.location.pathname,
+            dark: 'auto',
+          });
+          setTimeout(() => {
+            if (!container.querySelector('.wl-editor')) showFallback();
+          }, 12000);
+        })
+        .catch(showFallback);
+    })();
+  </script>
+  {{- end -}}
+{{- end }}
 
 {{- end }}

@@ -103,6 +103,9 @@ hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否�
 
   uglyURLs = false          # please keep same with uglyurls setting
 
+  [params.comments]       # 文章页评论区（Waline 自托管，见 /opt/waline 与 docs/deploy.md）
+    walineServer = "https://blog-waline.itony.net"
+
   [params.giscus]           # 基于 GitHub Discussions 的评论系统，见 https://giscus.app
     enable = true
     # 在 https://giscus.app 输入仓库名即可自动生成下面两个 ID（需先在仓库 Settings 中开启 Discussions）
