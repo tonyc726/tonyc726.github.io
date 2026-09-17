@@ -1,0 +1,39 @@
+{{- /* 文章页且未在 front matter 关闭 lightbox 时启用 */ -}}
+{{- if and .IsPage .Site.Params.lightbox (ne .Params.lightbox false) -}}
+<script>window.__ENABLE_LIGHTBOX__ = true;</script>
+{{- end -}}
+
+{{ $even := resources.Get "js/even.js" }}
+{{ $main := resources.Get "js/main.js" }}
+{{ $js := slice $even $main | resources.Concat "js/main.js" | minify | fingerprint }}
+<script type="text/javascript" src="{{ $js.RelPermalink }}"></script>
+
+{{- if and (or .Params.mathjax (and .Site.Params.mathjax (ne .Params.mathjax false))) (or .IsPage .IsHome) }}
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        {{ if or .Params.mathjaxEnableSingleDollar (and .Site.Params.mathjaxEnableSingleDollar (ne .Params.mathjaxEnableSingleDollar false)) -}}
+          inlineMath: [['$','$'], ['\\(','\\)']],
+        {{ end -}}
+        {{ if or .Params.mathjaxEnableAutoNumber (and .Site.Params.mathjaxEnableAutoNumber (ne .Params.mathjaxEnableAutoNumber false)) -}}
+          tags: 'ams',
+        {{ end -}}
+      }
+    };
+  </script>
+  {{ if .Site.Params.mathjaxUseLocalFiles -}}
+    <script type="text/javascript" async src="{{ "lib/mathjax/es5/tex-mml-chtml.js" | relURL }}"></script>
+  {{- else -}}
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+  {{- end -}}
+{{- end }}
+
+<!-- Analytics -->
+{{- if (in (slice (getenv "HUGO_ENV") hugo.Environment) "production") | and .Site.Config.Services.GoogleAnalytics.ID -}}
+  {{ template "_internal/google_analytics.html" . }}
+{{- end -}}
+
+<!-- custom js -->
+{{ range .Site.Params.customJS -}}
+<script src="{{ "/js/" | relURL }}{{ . }}"></script>
+{{ end }}

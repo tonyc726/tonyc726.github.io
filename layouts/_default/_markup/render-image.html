@@ -1,0 +1,9 @@
+{{- $alt := .PlainText | safeHTML -}}
+{{- if .Title -}}
+<figure>
+  <img src="{{ .Destination | safeURL }}" alt="{{ $alt }}" title="{{ .Title | safeHTML }}" loading="lazy" decoding="async">
+  <figcaption>{{ .Title | safeHTML }}</figcaption>
+</figure>
+{{- else -}}
+<img src="{{ .Destination | safeURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+{{- end -}}

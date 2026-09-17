@@ -1,0 +1,81 @@
+{{- /* 默认分享图：可替换 static/img/og-default.png */ -}}
+{{- $ogImage := "img/og-default.png" | absURL -}}
+{{- with .Params.cover }}{{ $ogImage = . | absURL }}{{ else }}{{ with .Params.images }}{{ $ogImage = (index . 0) | absURL }}{{ end }}{{ end -}}
+
+{{- /* 描述：与 head.html 保持同一套优先级 */ -}}
+{{- $description := "" -}}
+{{- if .Description -}}
+  {{- $description = .Description | plainify | safeHTML -}}
+{{- else if .IsPage -}}
+  {{- $description = .Summary | plainify | safeHTML -}}
+{{- else if .Site.Params.description -}}
+  {{- $description = .Site.Params.description | safeHTML -}}
+{{- end -}}
+
+{{- $title := .Title -}}
+{{- if not .IsPage }}{{ $title = .Site.Title }}{{ end -}}
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="{{ .Site.Title }}" />
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:image" content="{{ $ogImage }}" />
+<meta property="og:locale" content="{{ replace .Site.Language.Locale "-" "_" }}" />
+{{- if .IsPage }}
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}" />
+<meta property="article:section" content="{{ .Section }}" />
+  {{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}" />
+  {{- end }}
+{{- else }}
+<meta property="og:type" content="website" />
+{{- end }}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+<meta name="twitter:image" content="{{ $ogImage }}" />
+
+<!-- JSON-LD -->
+{{- if .IsPage }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ $description | jsonify }},
+  "image": {{ $ogImage | jsonify }},
+  "url": {{ .Permalink | jsonify }},
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  "inLanguage": "{{ .Site.Language.Locale }}",
+  "author": {
+    "@type": "Person",
+    "name": {{ .Site.Params.author.name | jsonify }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ .Site.Title | jsonify }}
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink | jsonify }}
+  }
+}
+</script>
+{{- else if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ .Site.Title | jsonify }},
+  "url": {{ .Site.BaseURL | jsonify }},
+  "description": {{ $description | jsonify }},
+  "inLanguage": "{{ .Site.Language.Locale }}"
+}
+</script>
+{{- end }}
