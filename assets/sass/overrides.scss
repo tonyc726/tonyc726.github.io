@@ -76,6 +76,145 @@
   }
 }
 
+// ---------- 文章页覆盖（主题规则均在 .post 下，此处对齐优先级） ----------
+.post {
+  // 文章目录：加宽、收紧缩进、限高可滚动。
+  // 定位（absolute/fixed 切换）由 even.js 滚动跟随逻辑以内联样式控制，
+  // 这里不要设置 position/top/left，否则会与内联样式冲突。
+  .post-toc {
+    width: 240px;
+    // 800px 内容栏 + 10px 间距（覆盖主题的 785px，配合加宽）
+    margin-left: 810px;
+    max-height: calc(100vh - 120px);
+    padding: 12px 14px;
+    overflow-y: auto;
+
+    .post-toc-content ul {
+      padding-left: 16px;
+
+      ul {
+        padding-left: 12px;
+      }
+    }
+  }
+
+  // 文章 meta：分隔符「·」两侧留白
+  .post-header .post-meta {
+    .post-category a::before,
+    .more-meta::before {
+      margin: 0 6px;
+    }
+  }
+
+  .post-content {
+    // 行内代码：超长标识符允许断行，避免窄屏撑破版心
+    code {
+      overflow-wrap: anywhere;
+    }
+
+    // 代码块内保持不折行（滚动而非换行）
+    pre code {
+      overflow-wrap: normal;
+    }
+
+    // 代码块：横向滚动阴影提示（Lea Verou scroll-hint 模式）
+    .highlight > .chroma {
+      background-image:
+        linear-gradient(to right, #f8f5ec 30%, rgba(248, 245, 236, 0)),
+        linear-gradient(to left, #f8f5ec 30%, rgba(248, 245, 236, 0)),
+        linear-gradient(to right, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0)),
+        linear-gradient(to left, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+      background-position: left, right, left, right;
+      background-size: 32px 100%, 32px 100%, 10px 100%, 10px 100%;
+      background-repeat: no-repeat;
+      background-attachment: local, local, scroll, scroll;
+      background-color: #f8f5ec;
+    }
+
+    // 代码块：一键复制按钮（按钮由 assets/js/main.js 注入）
+    .highlight {
+      position: relative;
+
+      .copy-code-button {
+        position: absolute;
+        top: 5px;
+        right: 6px;
+        z-index: 2;
+        padding: 2px 10px;
+        font-size: 12px;
+        line-height: 1.8;
+        font-family: inherit;
+        color: #7a7264;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, color 0.2s;
+
+        &:hover {
+          color: #c05b4d;
+        }
+
+        &.copied {
+          color: #4caf50;
+        }
+      }
+
+      &:hover .copy-code-button,
+      .copy-code-button:focus-visible {
+        opacity: 1;
+      }
+    }
+
+    // 柔和阴影：替换主题统一的 1px 1px 2px 硬阴影
+    blockquote,
+    .table-wrapper > table,
+    figure.highlight,
+    .highlight > .chroma {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  // 目录本身也用柔和阴影
+  .post-toc {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  // 上/下一篇导航：到头占位样式
+  .post-footer .post-nav .empty {
+    color: #b5b0a5;
+    font-weight: 400;
+    cursor: default;
+
+    // 主题对 .prev/.next 有 hover 位移与变色，占位需要排除
+    &:hover {
+      color: #b5b0a5;
+      transform: none;
+    }
+  }
+}
+
+// 目录加宽后，隐藏断点需从主题的 1185px 同步上调（800 + 2*250）
+@media (max-width: 1300px) {
+  .post .post-toc {
+    display: none;
+  }
+}
+
+// 触屏设备没有 hover，复制按钮常驻淡显
+@media (hover: none) {
+  .post .post-content .highlight .copy-code-button {
+    opacity: 0.85;
+  }
+}
+
+// ---------- Waline 评论区：主题色与全站统一 ----------
+#waline-comments {
+  --waline-theme-color: #c05b4d;
+  --waline-active-color: #d4837a;
+}
+
 // ---------- Waline 评论区：加载骨架屏与失败态 ----------
 .post-comments {
   margin-top: 20px;
@@ -178,6 +317,12 @@
 
     .post-footer {
       border-top-color: $dark-border;
+    }
+
+    // 上/下一篇到头占位
+    .post-footer .post-nav .empty,
+    .post-footer .post-nav .empty:hover {
+      color: #5a5a60;
     }
 
     // 目录
