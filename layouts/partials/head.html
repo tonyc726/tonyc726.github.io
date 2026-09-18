@@ -59,7 +59,10 @@
 {{- end -}}
 
 <!-- Styles -->
-{{ $style := resources.Get "sass/main.scss" | toCSS | minify | fingerprint }}
+{{/* 主题样式在前、站点覆盖样式在后拼接为单一文件：保证同优先级下覆盖生效（_custom 在主题变量之前引入，无法承担覆盖职责） */}}
+{{ $themeStyle := resources.Get "sass/main.scss" | toCSS }}
+{{ $overrides := resources.Get "sass/overrides.scss" | toCSS }}
+{{ $style := slice $themeStyle $overrides | resources.Concat "sass/main.css" | minify | fingerprint }}
 <link href="{{ $style.RelPermalink }}" rel="stylesheet">
 
 <!-- custom css -->
