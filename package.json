@@ -12,6 +12,7 @@
     "node": "22.x"
   },
   "scripts": {
+    "build": "hugo --gc",
     "start": "tsx ./scripts/index.ts",
     "start:commonmark": "tsx ./scripts/index.commonmark.ts",
     "lint": "eslint .",
