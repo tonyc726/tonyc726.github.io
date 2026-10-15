@@ -9,10 +9,9 @@
   "private": false,
   "type": "module",
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "scripts": {
-    "build": "hugo --gc",
     "start": "tsx ./scripts/index.ts",
     "start:commonmark": "tsx ./scripts/index.commonmark.ts",
     "lint": "eslint .",
@@ -45,8 +44,5 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "unified": "^11.0.5"
-  },
-  "allowScripts": {
-    "esbuild@0.28.2": true
   }
 }
