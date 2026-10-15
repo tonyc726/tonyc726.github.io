@@ -1,0 +1,33 @@
+# Vercel's Hugo static builder selects a Node.js build image before install.
+# This project's image only has a discontinued Node major, so every new
+# deployment fails in a few seconds (engines 22.x and 24.x included).
+# A Dockerfile.vercel deploy skips that check. Hugo extended matches CI.
+FROM debian:bookworm-slim AS build
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates curl \
+  && rm -rf /var/lib/apt/lists/*
+
+ARG HUGO_VERSION=0.166.0
+ARG TARGETARCH=amd64
+RUN curl -fsSL -o /tmp/hugo.tar.gz \
+      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
+  && tar -C /usr/local/bin -xzf /tmp/hugo.tar.gz hugo \
+  && rm /tmp/hugo.tar.gz \
+  && hugo version
+
+WORKDIR /src
+COPY . .
+RUN hugo --gc --minify
+
+FROM nginx:1.27-alpine
+
+COPY deploy/nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY deploy/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh \
+  && rm -f /etc/nginx/conf.d/default.conf
+
+COPY --from=build /src/public /usr/share/nginx/html
+
+EXPOSE 80
+ENTRYPOINT ["/docker-entrypoint.sh"]
